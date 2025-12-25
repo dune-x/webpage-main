@@ -44,6 +44,13 @@ const bigSponsors = [
     description:
       "Garden Hotel Group es una cadena hotelera comprometida con la sostenibilidad y la responsabilidad social. Su implicación solidaria con nuestro proyecto del UniRaid está siendo clave: nos han proporcionado material de primera necesidad para las aldeas del desierto y, además, han realizado una aportación económica que nos permite avanzar en la preparación del viaje y en la entrega de ayuda humanitaria. Gracias a su apoyo, podemos llevar más recursos y generar un impacto real en las comunidades que más lo necesitan.",
   },
+    {
+    name: "AIRFIRE",
+    src: "/images/sponsors/AIRFIRE.png",
+    href: "https://www.airfire.es",
+    description:
+      "Soluciones técnicas y apoyo al equipo en componentes y recursos.",
+  },
 ];
 
 const smallSponsors = [
@@ -67,13 +74,6 @@ const smallSponsors = [
     href: "https://www.instagram.com/lunamoda__",
     description:
       "Moda y energía para el proyecto: soporte y visibilidad en redes.",
-  },
-  {
-    name: "AIRFIRE",
-    src: "/images/sponsors/AIRFIRE.png",
-    href: "https://www.airfire.es",
-    description:
-      "Soluciones técnicas y apoyo al equipo en componentes y recursos.",
   },
   {
     name: "ABRIL",
