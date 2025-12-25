@@ -1,5 +1,5 @@
 import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
-import { Line, Row, Text } from "@once-ui-system/core";
+import { Line, Row, Text, TypeFx } from "@once-ui-system/core";
 
 const person: Person = {
   firstName: "Dune-X",
@@ -75,10 +75,12 @@ const home: Home = {
     href: "/work/building-once-ui-a-customizable-design-system",
   },
   subline: (
-    <Text>
-      Más que un Raid<br />
-      Una aventura que deja huella
-    </Text>
+      <TypeFx
+words="Más que un Raid, una aventura que deja huella"
+speed={100}
+delay={500}
+trigger="instant"
+/> 
   ),
 };
 

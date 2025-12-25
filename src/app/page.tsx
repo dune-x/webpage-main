@@ -10,6 +10,8 @@ import {
   Schema,
   Meta,
   Line,
+  AutoScroll,
+  Logo,
 } from "@once-ui-system/core";
 import { home, about, person, baseURL, routes } from "@/resources";
 import { Mailchimp } from "@/components";
@@ -25,6 +27,19 @@ export async function generateMetadata() {
     image: home.image,
   });
 }
+
+const sponsors = [
+  { icon: "/images/sponsors/CIMWORKS.webp", href: "https://www.cimworks.es" },
+  { icon: "/images/sponsors/EIC.png", href: "https://eic.cat" },
+  { icon: "/images/sponsors/luis capdevila.webp", href: "https://luiscapdevila.es" },
+  { icon: "/images/sponsors/garden.png", href: "https://www.gardenhotels.com" },
+  { icon: "/images/sponsors/AIRFIRE.png", href: "https://www.airfire.es" },
+  { icon: "/images/sponsors/ETSEIB.png", href: "https://etseib.upc.edu" },
+  { icon: "/images/sponsors/Joan i Jordi.png", href: "https://joanijordi.com" },
+  { icon: "/images/sponsors/Luna.jpg", href: "https://www.instagram.com/lunamoda__" },
+  { icon: "/images/sponsors/ABRIL.png", href: "https://www.disabril.com/" },
+  { icon: "/images/sponsors/MOAUTO.png" },
+];
 
 export default function Home() {
   return (
@@ -127,6 +142,37 @@ export default function Home() {
     />
   </Column>
 </RevealFx>
+<Line marginY="40" />
+<Heading
+  paddingY="0"
+  variant="display-strong-s"
+  align="left"
+  onBackground="neutral-strong"
+>
+  Nuestros colaboradores
+</Heading>
+<AutoScroll  speed="slow" paddingY="16">
+  {sponsors.map((s) => (
+    <Row
+      key={s.icon}
+      paddingX="48"
+      vertical="center"
+      style={{
+        height: 120,              // 👈 espacio vertical suficiente
+        transform: "scale(1.3)",  // 👈 tu scaling original
+        transformOrigin: "center",
+        alignItems: "center",
+      }}
+    >
+      <Logo
+        wordmark={s.icon}
+        size="xl"
+        href={s.href || "#"}
+      />
+    </Row>
+  ))}
+</AutoScroll>
+<Line marginY="16" />
         </Column>
       </Column>
       <RevealFx translateY="16" delay={0.6}>
