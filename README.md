@@ -4,7 +4,6 @@ La web de Dune‑X es un **proyecto** que presenta información sobre el equipo,
 
 👉 **Visita la página:** [https://webpage-main-eight.vercel.app/](https://webpage-main-eight.vercel.app/)
 
-![Dune-X Home](public/images/og/home.png)
 
 ## Características principales
 
