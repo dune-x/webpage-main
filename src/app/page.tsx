@@ -107,7 +107,7 @@ export default function Home() {
                     marginRight="8"
                     style={{ marginLeft: "-0.75rem" }}
                     src={person.avatar}
-                    size="m"
+                    size="xs"
                   />
                 )}
                 {about.title}
@@ -136,8 +136,8 @@ export default function Home() {
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowFullScreen
       style={{
-        width: "100%",
-        height: "100%",
+        width: "50%",
+        height: "50%",
         border: 0,
       }}
     />
