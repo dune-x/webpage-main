@@ -46,7 +46,7 @@ export default function CountdownLaunch() {
   return (
     <Column horizontal="center" gap="16">
       <Heading variant="display-strong-xs">
-        Lanzamiento en
+        UNIRAID en...
       </Heading>
 
       <Countdown
