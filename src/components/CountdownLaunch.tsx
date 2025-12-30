@@ -1,7 +1,8 @@
 "use client";
 
 import Countdown, { CountdownRendererFn } from "react-countdown";
-import { Column, Row, Text, Heading } from "@once-ui-system/core";
+import Image from "next/image";
+import { Column, Row, Text } from "@once-ui-system/core";
 
 type TimeBoxProps = {
   label: string;
@@ -10,9 +11,13 @@ type TimeBoxProps = {
 
 function TimeBox({ label, value }: TimeBoxProps) {
   return (
-    <Column align="center">
-      <Text variant="display-strong-s">{value}</Text>
-      <Text onBackground="neutral-weak">{label}</Text>
+    <Column align="center" gap="4">
+      <Text variant="display-strong-l">
+        {String(value).padStart(2, "0")}
+      </Text>
+      <Text onBackground="neutral-weak">
+        {label}
+      </Text>
     </Column>
   );
 }
@@ -34,7 +39,7 @@ export default function CountdownLaunch() {
     }
 
     return (
-      <Row gap="24">
+      <Row gap="32">
         <TimeBox label="Días" value={days} />
         <TimeBox label="Horas" value={hours} />
         <TimeBox label="Min" value={minutes} />
@@ -44,11 +49,17 @@ export default function CountdownLaunch() {
   };
 
   return (
-    <Column horizontal="center" gap="16">
-      <Heading variant="display-strong-xs">
-        UNIRAID...
-      </Heading>
+    <Column horizontal="center" gap="24">
+      {/* Logo UNIRAID */}
+      <Image
+        src="/uniraid.png"
+        alt="UNIRAID"
+        width={260}
+        height={90}
+        priority
+      />
 
+      {/* Countdown */}
       <Countdown
         date="2026-02-07T00:00:00"
         renderer={renderer}
