@@ -101,7 +101,7 @@ export default function Home() {
               weight="default"
               arrowIcon
             >
-              <Row gap="8" vertical="center" paddingRight="4">
+              <Row gap="8" vertical="center" paddingRight="4" style={{ flex: "none" }}>
                 {about.avatar.display && (
                   <Avatar
                     marginRight="8"
@@ -123,7 +123,7 @@ export default function Home() {
 >
   <Column
     fillWidth
-    maxWidth="l"
+    maxWidth="s"
     style={{
       aspectRatio: "16 / 9",
       borderRadius: 24,
@@ -136,8 +136,8 @@ export default function Home() {
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowFullScreen
       style={{
-        width: "50%",
-        height: "50%",
+        width: "100%",
+        height: "100%",
         border: 0,
       }}
     />
