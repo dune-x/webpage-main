@@ -52,7 +52,7 @@ export default function CountdownLaunch() {
     <Column horizontal="center" gap="24">
       {/* Logo UNIRAID */}
       <Image
-        src="/uniraid.png"
+        src="/images/uniraid.png"
         alt="UNIRAID"
         width={260}
         height={90}
