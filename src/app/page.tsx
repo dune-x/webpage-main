@@ -44,7 +44,7 @@ const sponsors = [
 
 export default function Home() {
   return (
-    <Column maxWidth="xl" gap="xl" paddingY="12" horizontal="center">
+    <Column maxWidth="l" gap="xl" paddingY="12" horizontal="center">
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -59,7 +59,7 @@ export default function Home() {
         }}
       />
       <Column fillWidth horizontal="center" gap="m">
-        <Column maxWidth="s" horizontal="center" align="center">
+        <Column maxWidth="l" horizontal="center" align="center">
           {home.featured.display && (
             <RevealFx
               fillWidth
