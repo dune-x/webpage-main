@@ -13,6 +13,7 @@ import {
   AutoScroll,
   Logo,
 } from "@once-ui-system/core";
+import CountdownLaunch from "@/components/CountdownLaunch";
 import { home, about, person, baseURL, routes } from "@/resources";
 import { Mailchimp } from "@/components";
 import { Projects } from "@/components/work/Projects";
@@ -141,6 +142,9 @@ export default function Home() {
       }}
     />
   </Column>
+</RevealFx>
+<RevealFx translateY="12" delay={0.6} horizontal="center" paddingTop="32">
+  <CountdownLaunch />
 </RevealFx>
 <Line marginY="40" />
 <Heading
