@@ -55,10 +55,14 @@ const home: Home = {
   title: `${person.name}`,
   description: `Página web del equipo ${person.role}`,
   headline: (
-    <img 
-      src="/images/logo.png" 
-      alt="Dune-X Logo" 
-      style={{ height: 'auto', maxWidth: '100%' }} 
+    <img
+      src="/images/logo.png"
+      alt="Dune-X Logo"
+      style={{
+        height: "auto",
+        width: "100%",      // ocupa todo el ancho en móvil
+        maxWidth: "300px",  // límite de ancho en escritorio
+      }}
     />
   ),
   featured: {
@@ -75,12 +79,12 @@ const home: Home = {
     href: "/work/building-once-ui-a-customizable-design-system",
   },
   subline: (
-      <TypeFx
-words="Más que un Raid, una aventura que deja huella"
-speed={100}
-delay={500}
-trigger="instant"
-/> 
+    <TypeFx
+      words="Más que un Raid, una aventura que deja huella"
+      speed={100}
+      delay={500}
+      trigger="instant"
+    />
   ),
 };
 
