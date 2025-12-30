@@ -13,7 +13,7 @@ const person: Person = {
 };
 
 const newsletter: Newsletter = {
-  display: true,
+  display: false,
   title: <>Subscribete a la Newsletter de {person.firstName}</>,
   description: <> Mantente informado sobre nuestra aventura </>,
 };
@@ -85,7 +85,7 @@ trigger="instant"
 };
 
 const about: About = {
-  path: "/sobreelequipo",
+  path: "/about",
   label: "Sobre el equipo",
   title: `Sobre – ${person.name}`,
   description: `Meet ${person.name}, ${person.role}`,
@@ -255,22 +255,7 @@ const gallery: Gallery = {
       orientation: "horizontal",
     },
     {
-      src: "/images/gallery/vertical-4.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/horizontal-3.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
       src: "/images/gallery/vertical-1.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/vertical-2.jpg",
       alt: "image",
       orientation: "vertical",
     },
@@ -280,12 +265,27 @@ const gallery: Gallery = {
       orientation: "horizontal",
     },
     {
+      src: "/images/gallery/vertical-2.jpg",
+      alt: "image",
+      orientation: "vertical",
+    },
+    {
+      src: "/images/gallery/vertical-3.jpg",
+      alt: "image",
+      orientation: "vertical",
+    },
+    {
+      src: "/images/gallery/horizontal-3.jpg",
+      alt: "image",
+      orientation: "horizontal",
+    },
+    {
       src: "/images/gallery/horizontal-4.jpg",
       alt: "image",
       orientation: "horizontal",
     },
     {
-      src: "/images/gallery/vertical-3.jpg",
+      src: "/images/gallery/vertical-4.jpg",
       alt: "image",
       orientation: "vertical",
     },
