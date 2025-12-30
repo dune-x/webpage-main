@@ -44,7 +44,7 @@ const sponsors = [
 
 export default function Home() {
   return (
-    <Column maxWidth="m" gap="xl" paddingY="12" horizontal="center">
+    <Column maxWidth="xl" gap="xl" paddingY="12" horizontal="center">
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -155,15 +155,29 @@ export default function Home() {
 >
   Nuestros colaboradores
 </Heading>
-<AutoScroll  speed="slow" paddingY="16">
+<AutoScroll
+  speed="slow"
+  paddingY="16"
+  style={{
+    width: "100%",
+    overflow: "hidden",
+    position: "relative",
+    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+    WebkitMaskRepeat: "no-repeat",
+    WebkitMaskSize: "100% 100%",
+    maskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+    maskRepeat: "no-repeat",
+    maskSize: "100% 100%",
+  }}
+>
   {sponsors.map((s) => (
     <Row
       key={s.icon}
       paddingX="48"
       vertical="center"
       style={{
-        height: 120,              // 👈 espacio vertical suficiente
-        transform: "scale(1.3)",  // 👈 tu scaling original
+        height: 160,           // altura más grande
+        transform: "scale(1.5)", // logos más grandes
         transformOrigin: "center",
         alignItems: "center",
       }}
