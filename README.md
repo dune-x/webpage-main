@@ -7,7 +7,7 @@ La web de Dune‑X es un **proyecto** que presenta información sobre el equipo,
 
 ## Características principales
 
-- 🧑‍💼 Presentación del **equipo** y sus perfiles  
+- 🧑‍💼 Presentación del **equipo**
 - 📂 **Proyectos** destacados del equipo  
 - ✍️ **Blog** con artículos y novedades  
 - 🤝 **Sponsors** que apoyan el proyecto  
