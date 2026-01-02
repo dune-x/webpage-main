@@ -61,7 +61,7 @@ const home: Home = {
       style={{
         height: "auto",
         width: "100%",      // ocupa todo el ancho en móvil
-        maxWidth: "300px",  // límite de ancho en escritorio
+        maxWidth: "510px",  // límite de ancho en escritorio
       }}
     />
   ),
@@ -91,7 +91,7 @@ const home: Home = {
 const about: About = {
   path: "/about",
   label: "Sobre el equipo",
-  title: `Sobre – ${person.name}`,
+  title: `Sobre ${person.name}`,
   description: `Meet ${person.name}, ${person.role}`,
   tableOfContent: {
     display: true,

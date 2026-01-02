@@ -73,7 +73,7 @@ const smallSponsors = [
     src: "/images/sponsors/Luna.jpg",
     href: "https://www.instagram.com/lunamoda__",
     description:
-      "Moda y energía para el proyecto: soporte y visibilidad en redes.",
+      "Ubicada en pleno corazón de Ciutadella (C/ de la Pau, 2), LUNA MODA es una tienda de ropa de referencia por su trato impecable y “top” que los hace únicos en la isla. ✨. Pero lo que hace que esta colaboración sea realmente especial es su compromiso social. Se unen a nuestra expedición aportando material solidario para los niños de los pueblos que recorreremos durante el raid. Nuestra prioridad será entregarles artículos para que jueguen y se diviertan, transformando el apoyo de LUNA MODA en sonrisas directas en mitad del desierto. 🧸🌵",
   },
   {
     name: "ABRIL",
