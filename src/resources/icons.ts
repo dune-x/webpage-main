@@ -29,7 +29,7 @@ import {
   SiSupabase,
 } from "react-icons/si";
 
-import { FaTrophy, FaDiscord, FaGithub, FaLinkedin, FaX, FaThreads, FaInstagram, FaXTwitter, FaFacebook, FaPinterest, FaWhatsapp, FaReddit, FaTelegram, FaTiktok, FaWrench} from "react-icons/fa6";
+import { FaTrophy, FaDiscord, FaGithub, FaLinkedin, FaX, FaThreads, FaInstagram, FaXTwitter, FaFacebook, FaPinterest, FaWhatsapp, FaReddit, FaTelegram, FaTiktok, FaWrench, FaPeopleGroup, FaChartGantt} from "react-icons/fa6";
 import { FaHandsHelping } from "react-icons/fa";
 
 export const iconLibrary: Record<string, IconType> = {
@@ -69,6 +69,8 @@ export const iconLibrary: Record<string, IconType> = {
   trophy: FaTrophy,
   handshelp: FaHandsHelping,
   wrench:FaWrench,
+  team:FaPeopleGroup,
+  gantt:FaChartGantt
 };
 
 export type IconLibrary = typeof iconLibrary;

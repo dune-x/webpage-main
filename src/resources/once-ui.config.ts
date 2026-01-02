@@ -106,7 +106,7 @@ const effects: EffectsConfig = {
     cursor: false,
     x: 50,
     y: 0,
-    radius: 100,
+    radius: 150,
   },
   gradient: {
     display: false,
@@ -121,7 +121,7 @@ const effects: EffectsConfig = {
   },
   dots: {
     display: true,
-    opacity: 40,
+    opacity: 60,
     size: "2",
     color: "brand-background-strong",
   },
@@ -210,7 +210,7 @@ const socialSharing: SocialSharingConfig = {
     linkedin: true,
     facebook: false,
     pinterest: false,
-    whatsapp: false,
+    whatsapp: true,
     reddit: false,
     telegram: false,
     email: true,

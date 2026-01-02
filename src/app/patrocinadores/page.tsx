@@ -21,35 +21,35 @@ const bigSponsors = [
     src: "/images/sponsors/CIMWORKS.webp",
     href: "https://www.cimworks.es",
     description:
-      "CIMWORKS aporta soluciones de ingeniería industrial y soporte técnico especializado, contribuyendo al desarrollo, optimización y fiabilidad del proyecto Dune-X.CIMWORKS aporta soluciones de ingeniería industrial y soporte técnico especializado, contribuyendo al desarrollo, optimización y fiabilidad del proyecto Dune-X.",
+      (<>CIMWORKS aporta soluciones de ingeniería industrial y soporte técnico especializado, contribuyendo al desarrollo, optimización y fiabilidad del proyecto Dune-X.CIMWORKS aporta soluciones de ingeniería industrial y soporte técnico especializado, contribuyendo al desarrollo, optimización y fiabilidad del proyecto Dune-X.</>),
   },
   {
     name: "EIC",
     src: "/images/sponsors/EIC.png",
     href: "https://eic.cat",
     description:
-      "Comunidad y soporte tecnológico para impulsar innovación y proyectos técnicos.",
+      (<>Comunidad y soporte tecnológico para impulsar innovación y proyectos técnicos.</>),
   },
   {
     name: "Luis Capdevila",
     src: "/images/sponsors/luis capdevila.webp",
     href: "https://luiscapdevila.es",
     description:
-      "Es una empresa especializada en soluciones profesionales de cocina y equipamiento industrial. Gracias a su experiencia, calidad de servicio y amplio catálogo de materiales, nos están ayudando enormemente en la preparación de los coches para el UniRaid. Nos ofrecen soporte técnico, servicios esenciales y una gran cantidad de material que está siendo clave para avanzar en el proyecto y asegurarnos de que los vehículos estén listos para el desafío.",
+      (<>Es una empresa especializada en soluciones profesionales de cocina y equipamiento industrial. Gracias a su experiencia, calidad de servicio y amplio catálogo de materiales, nos están ayudando enormemente en la preparación de los coches para el UniRaid. Nos ofrecen soporte técnico, servicios esenciales y una gran cantidad de material que está siendo clave para avanzar en el proyecto y asegurarnos de que los vehículos estén listos para el desafío.</>),
   },
   {
     name: "Garden Hotel Group",
     src: "/images/sponsors/garden.png",
     href: "https://www.gardenhotels.com",
     description:
-      "Garden Hotel Group es una cadena hotelera comprometida con la sostenibilidad y la responsabilidad social. Su implicación solidaria con nuestro proyecto del UniRaid está siendo clave: nos han proporcionado material de primera necesidad para las aldeas del desierto y, además, han realizado una aportación económica que nos permite avanzar en la preparación del viaje y en la entrega de ayuda humanitaria. Gracias a su apoyo, podemos llevar más recursos y generar un impacto real en las comunidades que más lo necesitan.",
+      (<>Garden Hotel Group es una cadena hotelera comprometida con la sostenibilidad y la responsabilidad social. Su implicación solidaria con nuestro proyecto del UniRaid está siendo clave: nos han proporcionado material de primera necesidad para las aldeas del desierto y, además, han realizado una aportación económica que nos permite avanzar en la preparación del viaje y en la entrega de ayuda humanitaria.<br /> Gracias a su apoyo, podemos llevar más recursos y generar un impacto real en las comunidades que más lo necesitan.</>),
   },
     {
     name: "AIRFIRE",
     src: "/images/sponsors/AIRFIRE.png",
     href: "https://www.airfire.es",
     description:
-      "Soluciones técnicas y apoyo al equipo en componentes y recursos.",
+      (<>Soluciones técnicas y apoyo al equipo en componentes y recursos.</>),
   },
 ];
 
@@ -59,35 +59,35 @@ const smallSponsors = [
     src: "/images/sponsors/ETSEIB.png",
     href: "https://etseib.upc.edu",
     description:
-      "La escuela que impulsa talento y conocimiento: soporte académico y comunidad.",
+      (<>La escuela que impulsa talento y conocimiento: soporte académico y comunidad.</>),
   },
   {
     name: "Joan i Jordi",
     src: "/images/sponsors/Joan i Jordi.png",
     href: "https://joanijordi.com",
     description:
-      "Es una Ferreteria ubicada en Menorca y un gran referente local en suministros de herramientas, materiales y equipamiento técnico. Con una larga trayectoria al servicio de profesionales y particulares, destacan por su atención cercana y la calidad de sus productos. En Dune-X, contamos con su apoyo como patrocinadores, aportando herramientas y material imprescindible para la preparación y reparación de nuestros coches antes del UniRaid.",
+      (<>Es una Ferreteria ubicada en Menorca y un gran referente local en suministros de herramientas, materiales y equipamiento técnico. Con una larga trayectoria al servicio de profesionales y particulares, destacan por su atención cercana y la calidad de sus productos. En Dune-X, contamos con su apoyo como patrocinadores, aportando herramientas y material imprescindible para la preparación y reparación de nuestros coches antes del UniRaid.</>),
   },
   {
     name: "Luna Moda",
     src: "/images/sponsors/Luna.jpg",
     href: "https://www.instagram.com/lunamoda__",
     description:
-      "Ubicada en pleno corazón de Ciutadella (C/ de la Pau, 2), LUNA MODA es una tienda de ropa de referencia por su trato impecable y “top” que los hace únicos en la isla. ✨. Pero lo que hace que esta colaboración sea realmente especial es su compromiso social. Se unen a nuestra expedición aportando material solidario para los niños de los pueblos que recorreremos durante el raid. Nuestra prioridad será entregarles artículos para que jueguen y se diviertan, transformando el apoyo de LUNA MODA en sonrisas directas en mitad del desierto. 🧸🌵",
+      (<>Ubicada en pleno corazón de Ciutadella (C/ de la Pau, 2), LUNA MODA es una tienda de ropa de referencia por su trato impecable y “top” que los hace únicos en la isla. ✨. Pero lo que hace que esta colaboración sea realmente especial es su compromiso social. Se unen a nuestra expedición aportando material solidario para los niños de los pueblos que recorreremos durante el raid. Nuestra prioridad será entregarles artículos para que jueguen y se diviertan, transformando el apoyo de LUNA MODA en sonrisas directas en mitad del desierto. 🧸🌵</>),
   },
   {
     name: "ABRIL",
     src: "/images/sponsors/ABRIL.png",
     href: "https://www.disabril.com/",
     description:
-      "Distribución y soporte para material y logística del proyecto.",
+      (<>Distribución y soporte para material y logística del proyecto.</>),
   },
   {
     name: "MOAUTO",
     src: "/images/sponsors/MOAUTO.png",
     href: "",
     description:
-      "Soporte local al equipo. (Web no disponible por ahora).",
+      (<>Soporte local al equipo. (Web no disponible por ahora).</>),
   },
 ];
 

@@ -119,6 +119,9 @@ export default function SponsorGrid({
           justify-content: flex-start;
           border-radius: 0 !important;
           overflow: visible !important;
+          flex-shrink: 0;     /* <- CLAVE */
+          min-width: 140px;   /* <- CLAVE */
+
         }
 
         .headerLogo img {
