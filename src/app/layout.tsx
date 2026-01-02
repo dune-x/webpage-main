@@ -4,6 +4,7 @@ import "@/resources/custom.css";
 
 import classNames from "classnames";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next"
 import {
   Background,
   Column,
@@ -163,6 +164,7 @@ localStorage.setItem('data-theme', 'dark');
           </Flex>
           <Footer />
           <SpeedInsights />
+          <Analytics />
         </Column>
       </Providers>
     </Flex>
