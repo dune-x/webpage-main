@@ -126,7 +126,8 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
               alt={post.metadata.title}
        
               priority
-              sizes="(min-width: 768px) 100vw, 768px"
+              maxWidth="s"
+
               border="neutral-alpha-weak"
               radius="l"
               marginTop="12"
@@ -145,7 +146,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
           <Column fillWidth gap="40" horizontal="center" marginTop="40">
             <Line maxWidth="40" />
             <Text as="h2" id="recent-posts" variant="heading-strong-xl" marginBottom="24">
-              Recent posts
+              Posts recientes
             </Text>
             <Posts exclude={[post.slug]} range={[1, 2]} columns="2" thumbnail direction="column" />
           </Column>

@@ -1,6 +1,7 @@
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import React, { ReactNode } from "react";
 import { slugify as transliterate } from "transliteration";
+import { InstagramEmbed } from "@/components/InstagramEmbed";
 
 import {
   Heading,
@@ -186,6 +187,7 @@ const components = {
   ul: createList as any,
   li: createListItem as any,
   hr: createHR as any,
+  InstagramEmbed,
   Heading,
   Text,
   CodeBlock,
