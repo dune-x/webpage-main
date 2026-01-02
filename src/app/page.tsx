@@ -13,7 +13,10 @@ import {
   AutoScroll,
   Logo,
 } from "@once-ui-system/core";
+
+import RevealOnScroll from "@/components/RevealOnScroll";
 import CountdownLaunch from "@/components/CountdownLaunch";
+import Metrics from "@/components/Metrics";
 import { home, about, person, baseURL, routes } from "@/resources";
 import { Mailchimp } from "@/components";
 import { Projects } from "@/components/work/Projects";
@@ -58,6 +61,7 @@ export default function Home() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
+
       <Column fillWidth horizontal="center" gap="m">
         <Column maxWidth="l" horizontal="center" align="center">
           {home.featured.display && (
@@ -81,16 +85,19 @@ export default function Home() {
               </Badge>
             </RevealFx>
           )}
+
           <RevealFx translateY="4" fillWidth horizontal="center" paddingBottom="16">
             <Heading wrap="balance" variant="display-strong-l">
               {home.headline}
             </Heading>
           </RevealFx>
+
           <RevealFx translateY="8" delay={0.2} fillWidth horizontal="center" paddingBottom="32">
             <Text wrap="balance" onBackground="neutral-weak" variant="heading-default-xl">
               {home.subline}
             </Text>
           </RevealFx>
+
           <RevealFx paddingTop="12" delay={0.4} horizontal="center" paddingLeft="12">
             <Button
               id="about"
@@ -114,108 +121,121 @@ export default function Home() {
               </Row>
             </Button>
           </RevealFx>
-          <RevealFx
-  translateY="12"
-  delay={0.5}
-  fillWidth
-  horizontal="center"
-  paddingTop="32"
->
-  <Column
-    fillWidth
-    maxWidth="s"
-    style={{
-      aspectRatio: "16 / 9",
-      borderRadius: 24,
-      overflow: "hidden",
-    }}
-  >
-    <iframe
-      src="https://www.youtube.com/embed/gET1pKnVVLA"
-      title="Video presentación Dune-X"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen
-      style={{
-        width: "100%",
-        height: "100%",
-        border: 0,
-      }}
-    />
-  </Column>
-</RevealFx>
-<RevealFx translateY="12" delay={0.6} horizontal="center" paddingTop="32">
+
+          <RevealFx translateY="12" delay={0.5} fillWidth horizontal="center" paddingTop="32">
+            <Column
+              fillWidth
+              maxWidth="s"
+              style={{
+                aspectRatio: "16 / 9",
+                borderRadius: 24,
+                overflow: "hidden",
+              }}
+            >
+              <iframe
+                src="https://www.youtube.com/embed/gET1pKnVVLA"
+                title="Video presentación Dune-X"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  border: 0,
+                }}
+              />
+            </Column>
+          </RevealFx>
+<Line marginY="64" />
+<RevealFx translateY={1} delay={0.6} horizontal="center" paddingTop="32">
   <CountdownLaunch />
 </RevealFx>
+
+{/* Métricas justo debajo del countdown */}
+<RevealFx translateY={1} delay={0.7} fillWidth paddingTop="24">
+  <Column
+    fillWidth
+    maxWidth="l"
+    align="left"
+    
+  >
+    <Metrics />
+  </Column>
+</RevealFx>
+
 <Line marginY="40" />
-<Heading
-  paddingY="0"
-  variant="display-strong-s"
-  align="left"
-  onBackground="neutral-strong"
->
-  Nuestros colaboradores
-</Heading>
-<AutoScroll
-  speed="slow"
-  paddingY="16"
-  style={{
-    width: "100%",
-    overflow: "hidden",
-    position: "relative",
-    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-    WebkitMaskRepeat: "no-repeat",
-    WebkitMaskSize: "100% 100%",
-    maskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-    maskRepeat: "no-repeat",
-    maskSize: "100% 100%",
-  }}
->
-  {sponsors.map((s) => (
-    <Row
-      key={s.icon}
-      paddingX="64"
-      vertical="center"
-      style={{
-        height: 160,           // altura más grande
-        transform: "scale(1.5)", // logos más grandes
-        transformOrigin: "center",
-        alignItems: "center",
-      }}
-    >
-      <Logo
-        wordmark={s.icon}
-        size="xl"
-        href={s.href || "#"}
-      />
-    </Row>
-  ))}
-</AutoScroll>
-<Line marginY="16" />
+
+          <Heading paddingY="0" variant="display-strong-s" align="left" onBackground="neutral-strong">
+            Nuestros patrocinadores
+          </Heading>
+
+          <AutoScroll
+            speed="slow"
+            paddingY="16"
+            style={{
+              width: "100%",
+              overflow: "hidden",
+              position: "relative",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+              WebkitMaskRepeat: "no-repeat",
+              WebkitMaskSize: "100% 100%",
+              maskImage:
+                "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+              maskRepeat: "no-repeat",
+              maskSize: "100% 100%",
+            }}
+          >
+            {sponsors.map((s) => (
+              <Row
+                key={s.icon}
+                paddingX="64"
+                vertical="center"
+                style={{
+                  height: 160,
+                  transform: "scale(1.5)",
+                  transformOrigin: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Logo wordmark={s.icon} size="xl" href={s.href || "#"} />
+              </Row>
+            ))}
+          </AutoScroll>
+
+          <Line marginY="16" />
         </Column>
       </Column>
+
+
+
       <RevealFx translateY="16" delay={0.6}>
         <Projects range={[1, 1]} />
       </RevealFx>
+
       {routes["/blog"] && (
         <Column fillWidth gap="24" marginBottom="l">
           <Row fillWidth paddingRight="64">
             <Line maxWidth={48} />
           </Row>
+
           <Row fillWidth gap="24" marginTop="40" s={{ direction: "column" }}>
             <Row flex={1} paddingLeft="l" paddingTop="24">
               <Heading as="h2" variant="display-strong-xs" wrap="balance">
                 Lo último del blog
               </Heading>
             </Row>
+
             <Row flex={3} paddingX="20">
               <Posts range={[1, 2]} columns="2" />
             </Row>
           </Row>
+
           <Row fillWidth paddingLeft="64" horizontal="end">
             <Line maxWidth={48} />
           </Row>
         </Column>
       )}
+
       <Mailchimp />
     </Column>
   );
