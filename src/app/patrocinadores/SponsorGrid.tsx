@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import {
   Animation,
   Arrow,
@@ -17,7 +18,7 @@ type Sponsor = {
   name: string;
   src: string;
   href: string;
-  description?: string;
+  description?: ReactNode;
 };
 
 export default function SponsorGrid({
