@@ -14,7 +14,7 @@ import {
   Logo,
 } from "@once-ui-system/core";
 
-import RevealOnScroll from "@/components/RevealOnScroll";
+
 import CountdownLaunch from "@/components/CountdownLaunch";
 import Metrics from "@/components/Metrics";
 import { home, about, person, baseURL, routes } from "@/resources";
