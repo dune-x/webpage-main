@@ -173,7 +173,7 @@ export default function Home() {
   {sponsors.map((s) => (
     <Row
       key={s.icon}
-      paddingX="48"
+      paddingX="64"
       vertical="center"
       style={{
         height: 160,           // altura más grande

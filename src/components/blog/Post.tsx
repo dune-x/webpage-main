@@ -26,17 +26,25 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
       s={{ direction: "column" }}
     >
       {post.metadata.image && thumbnail && (
-        <Media
-          priority
-          sizes="(max-width: 768px) 100vw, 640px"
-          border="neutral-alpha-weak"
-          cursor="interactive"
-          radius="l"
-          src={post.metadata.image}
-          alt={"Thumbnail of " + post.metadata.title}
-          aspectRatio="16 / 9"
-        />
-      )}
+  <div style={{ width: "100%", overflow: "hidden", borderRadius: "var(--radius-l)" }}>
+    <Media
+      priority
+      sizes="(max-width: 768px) 100vw, 640px"
+      border="neutral-alpha-weak"
+      cursor="interactive"
+      radius="l"
+      src={post.metadata.image}
+      alt={"Thumbnail of " + post.metadata.title}
+
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+        objectPosition: "center",
+      }}
+    />
+  </div>
+)}
       <Row fillWidth>
         <Column maxWidth={28} paddingY="24" paddingX="l" gap="20" vertical="center">
           <Row gap="24" vertical="center">
