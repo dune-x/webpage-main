@@ -3,7 +3,7 @@ import "@once-ui-system/core/css/tokens.css";
 import "@/resources/custom.css";
 
 import classNames from "classnames";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
   Background,
   Column,
@@ -162,6 +162,7 @@ localStorage.setItem('data-theme', 'dark');
             </Flex>
           </Flex>
           <Footer />
+          <SpeedInsights />
         </Column>
       </Providers>
     </Flex>
