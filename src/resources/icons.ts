@@ -30,7 +30,7 @@ import {
 } from "react-icons/si";
 
 import { FaTrophy, FaDiscord, FaGithub, FaLinkedin, FaX, FaThreads, FaInstagram, FaXTwitter, FaFacebook, FaPinterest, FaWhatsapp, FaReddit, FaTelegram, FaTiktok, FaWrench, FaPeopleGroup, FaChartGantt} from "react-icons/fa6";
-import { FaHandsHelping } from "react-icons/fa";
+import { FaHandsHelping, FaMapMarkedAlt } from "react-icons/fa";
 
 export const iconLibrary: Record<string, IconType> = {
   arrowUpRight: HiArrowUpRight,
@@ -70,7 +70,8 @@ export const iconLibrary: Record<string, IconType> = {
   handshelp: FaHandsHelping,
   wrench:FaWrench,
   team:FaPeopleGroup,
-  gantt:FaChartGantt
+  gantt:FaChartGantt,
+  mapmarked: FaMapMarkedAlt,
 };
 
 export type IconLibrary = typeof iconLibrary;

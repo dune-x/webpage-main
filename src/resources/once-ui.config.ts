@@ -14,7 +14,7 @@ import {
 import { home } from "./index";
 
 // IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
-const baseURL: string = "https://demo.magic-portfolio.com";
+const baseURL: string = "https://dune-x.com";
 
 const routes: RoutesConfig = {
   "/": true,
@@ -23,6 +23,7 @@ const routes: RoutesConfig = {
   "/blog": true,
   "/gallery": true,
   "/patrocinadores": true,
+  "/uniraid2026": true,
 };
 
 const display: DisplayConfig = {

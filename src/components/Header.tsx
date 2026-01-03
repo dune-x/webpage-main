@@ -109,6 +109,25 @@ export const Header = () => {
                   </Row>
                 </>
               )}
+              {routes["/uniraid2026"] && (
+                <>
+                  <Row s={{ hide: true }}>
+                    <ToggleButton
+                      prefixIcon="mapmarked"
+                      href="/uniraid2026"
+                      label={"Uniraid 2026"}
+                      selected={pathname.startsWith("/uniraid2026")}
+                    />
+                  </Row>
+                  <Row hide s={{ hide: false }}>
+                    <ToggleButton
+                      prefixIcon="mapmarked"
+                      href="/uniraid2026"
+                      selected={pathname.startsWith("/uniraid2026")}
+                    />
+                  </Row>
+                </>
+              )}
               {routes["/work"] && (
                 <>
                   <Row s={{ hide: true }}>
