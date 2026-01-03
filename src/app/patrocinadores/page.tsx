@@ -63,7 +63,7 @@ const smallSponsors = [
   },
   {
     name: "Joan i Jordi",
-    src: "/images/sponsors/Joan i Jordi.png",
+    src: "/images/sponsors/Joan i Jordi BLANCO.png",
     href: "https://joanijordi.com",
     description:
       (<>Es una Ferreteria ubicada en Menorca y un gran referente local en suministros de herramientas, materiales y equipamiento técnico. Con una larga trayectoria al servicio de profesionales y particulares, destacan por su atención cercana y la calidad de sus productos. En Dune-X, contamos con su apoyo como patrocinadores, aportando herramientas y material imprescindible para la preparación y reparación de nuestros coches antes del UniRaid.</>),
