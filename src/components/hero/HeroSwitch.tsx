@@ -31,9 +31,6 @@ export default function HeroSwitch() {
   return isMap ? (
     <HeroMap isMap onToggle={(checked) => setVariant(checked ? "map" : "countdown")} />
   ) : (
-    <HeroCountdown
-      isMap={false}
-      onToggle={(checked) => setVariant(checked ? "map" : "countdown")}
-    />
+    <HeroCountdown />
   );
 }
