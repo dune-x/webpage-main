@@ -14,13 +14,15 @@ import {
   Logo,
 } from "@once-ui-system/core";
 
-
+import RaidMapClient from "@/app/uniraid2026/RaidMapClient.tsx";
 import CountdownLaunch from "@/components/CountdownLaunch";
+import HeroCountdown from "@/components/hero/HeroCountdown";
 import Metrics from "@/components/Metrics";
 import { home, about, person, baseURL, routes } from "@/resources";
 import { Mailchimp } from "@/components";
 import { Projects } from "@/components/work/Projects";
 import { Posts } from "@/components/blog/Posts";
+import HeroSwitch from "@/components/hero/HeroSwitch";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -147,9 +149,8 @@ export default function Home() {
           </RevealFx>
 <Line marginY="64" />
 <RevealFx translateY={1} delay={0.6} horizontal="center" paddingTop="32">
-  <CountdownLaunch />
+  <HeroCountdown />
 </RevealFx>
-
 {/* Métricas justo debajo del countdown */}
 <RevealFx translateY={1} delay={0.7} fillWidth paddingTop="24">
   <Column

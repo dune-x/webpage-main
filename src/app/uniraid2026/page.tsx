@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Column,
   Heading,
@@ -9,6 +10,7 @@ import {
 } from "@once-ui-system/core";
 import { baseURL } from "@/resources";
 import RaidMapClient from "./RaidMapClient";
+import styles from "./page.module.css";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -40,18 +42,64 @@ export default function UniRaid2026Page() {
         }}
       />
 
-      <Column gap="m">
-        <Heading variant="display-strong-l">Mapa de Uniraid 2026</Heading>
-      </Column>
+      <Heading variant="display-strong-l">Uniraid 2026</Heading>
+
+      {/* Intro responsive */}
+      <div className={styles.introGrid}>
+        {/* Texto */}
+        <Column gap="s" style={{ minWidth: 0 }}>
+          <Text variant="heading-default-s">¿Qué es Uniraid?</Text>
+          <Text onBackground="neutral-weak">
+            Uniraid es un raid solidario y de aventura por Marruecos, pensado
+            para estudiantes y jóvenes, donde la navegación, la estrategia y el
+            trabajo en equipo son clave. No se trata solo de llegar, sino de
+            aprender a orientarse, gestionar el vehículo y vivir la experiencia
+            etapa a etapa.
+          </Text>
+
+          <Text variant="heading-default-s">
+            ¿Por qué participamos como Dune-X?
+          </Text>
+          <Text onBackground="neutral-weak">
+            Participamos para poner a prueba nuestro proyecto en un entorno real,
+            compartir la aventura con la comunidad y aportar nuestro granito de
+            arena en el componente solidario del raid. Para nosotros es un reto
+            técnico y humano: preparar el coche, optimizar la logística y
+            demostrar que con equipo y constancia se puede.
+          </Text>
+        </Column>
+
+        {/* Logo centrado */}
+        <Column
+          align="center"
+          justify="center"
+          style={{
+            width: "100%",
+            minHeight: 220,
+          }}
+        >
+          <Image
+            src="/images/gallery/horizontal-2.jpg"
+            alt="Uniraid"
+            width={260}
+            height={260}
+            priority
+            style={{
+              width: "min(260px, 70vw)",
+              height: "auto",
+              objectFit: "contain",
+            }}
+          />
+        </Column>
+      </div>
 
       <Row fillWidth paddingRight="0">
         <Line maxWidth={48} />
       </Row>
 
-      {/* Interactivo */}
+      <Heading variant="display-strong-s">Ruta del raid</Heading>
+
       <RaidMapClient />
-
-
     </Column>
   );
 }
