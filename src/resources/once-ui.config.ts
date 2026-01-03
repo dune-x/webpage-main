@@ -24,6 +24,7 @@ const routes: RoutesConfig = {
   "/gallery": true,
   "/patrocinadores": true,
   "/uniraid2026": true,
+  "/torneo": true,
 };
 
 const display: DisplayConfig = {

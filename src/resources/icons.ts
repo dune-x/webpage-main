@@ -31,6 +31,7 @@ import {
 
 import { FaTrophy, FaDiscord, FaGithub, FaLinkedin, FaX, FaThreads, FaInstagram, FaXTwitter, FaFacebook, FaPinterest, FaWhatsapp, FaReddit, FaTelegram, FaTiktok, FaWrench, FaPeopleGroup, FaChartGantt} from "react-icons/fa6";
 import { FaHandsHelping, FaMapMarkedAlt } from "react-icons/fa";
+import { IoIosTennisball } from "react-icons/io";
 
 export const iconLibrary: Record<string, IconType> = {
   arrowUpRight: HiArrowUpRight,
@@ -72,6 +73,7 @@ export const iconLibrary: Record<string, IconType> = {
   team:FaPeopleGroup,
   gantt:FaChartGantt,
   mapmarked: FaMapMarkedAlt,
+  tennisball: IoIosTennisball,
 };
 
 export type IconLibrary = typeof iconLibrary;

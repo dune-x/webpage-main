@@ -204,6 +204,25 @@ export const Header = () => {
                   </Row>
                 </>
               )}
+              {routes["/torneo"] && (
+                <>
+                  <Row s={{ hide: true }}>
+                    <ToggleButton
+                      prefixIcon="tennisball"
+                      href="/torneo"
+                      label={"Torneo de Pádel 2026"}
+                      selected={pathname.startsWith("/torneo")}
+                    />
+                  </Row>
+                  <Row hide s={{ hide: false }}>
+                    <ToggleButton
+                      prefixIcon="tennisball"
+                      href="/torneo"
+                      selected={pathname.startsWith("/torneo")}
+                    />
+                  </Row>
+                </>
+              )}
               
             </Row>
           </Row>
