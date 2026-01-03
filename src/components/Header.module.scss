@@ -1,21 +1,125 @@
-@use "./breakpoints.scss" as breakpoints;
+/* src/components/Header.module.scss */
 
-.mask {
-    pointer-events: none;
-    backdrop-filter: blur(0.5rem);
-    background: linear-gradient(to bottom, var(--page-background), var(--static-transparent));
-    mask-image: linear-gradient(rgba(0,0,0) 25%, rgba(0, 0, 0, 0) 100%);
-    mask-size: 100% 100%;
+.headerContainer {
+    /* CAMBIO CLAVE: Usamos fixed para anclarlo 100% arriba desde el inicio */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    margin: 0; /* Eliminamos cualquier margen accidental */
+    padding: 0;
+    
+    z-index: 999;
+    width: 100%;
+    background-color: #000a14f7;
+    border-bottom: 1px solid var(--neutral-alpha-weak);
+    
+    /* Opcional: Si usas algún efecto de desenfoque */
+    /* backdrop-filter: blur(10px); */
+}
+/* UTILIDADES DE VISIBILIDAD */
+.desktopOnly {
+    display: flex !important;
+    @media (max-width: 768px) {
+        display: none !important;
+    }
 }
 
-@media (max-width: breakpoints.$s) {
-    .position {
-        top: auto;
-        bottom: var(--static-space-24);
+.mobileOnly {
+    display: none !important;
+    @media (max-width: 768px) {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* TAMAÑOS DE LOGO */
+.desktopLogo {
+    height: 70px;
+    width: auto;
+}
+
+.mobileLogo {
+    height: 70px; /* Ajusta este tamaño si quieres el logo móvil más grande */
+    width: auto;
+}
+
+/* --- HAMBURGUESA CSS PURA (INFALIBLE) --- */
+.hamburger {
+    width: 30px;
+    height: 18px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1001;
+    transform: rotate(0deg);
+    transition: .5s ease-in-out;
+}
+
+.hamburger span {
+    display: block;
+    position: absolute;
+    height: 2px; /* Grosor de la línea */
+    width: 100%;
+    background: #C2B280; /* COLOR ARENA FORZADO */
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+}
+
+/* Posición de las 3 líneas */
+.hamburger span:nth-child(1) { top: 0px; }
+.hamburger span:nth-child(2) { top: 10px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+/* Animación al abrirse (X) */
+.hamburger.open span:nth-child(1) {
+    top: 10px;
+    transform: rotate(135deg);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+    left: -60px;
+}
+
+.hamburger.open span:nth-child(3) {
+    top: 10px;
+    transform: rotate(-135deg);
+}
+
+/* 1. Efecto Zoom General (Desktop y Móvil) */
+.navLink {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
+    transform-origin: center;
+    
+    &:hover {
+        transform: scale(1.1); /* Crece un 10% */
+        opacity: 1 !important;
+    }
+}
+
+/* 2. Efecto Flecha Móvil */
+.mobileLinkItem {
+    /* Contenedor para controlar el hover de la flecha */
+    transition: background-color 0.2s ease;
+    border-radius: 8px;
+
+    /* La flecha (icono) */
+    .arrowIcon {
+        opacity: 0.5;
+        transform: translateX(0);
+        transition: all 0.3s ease;
     }
 
-    .mask {
-        transform: rotate(180deg);
-        bottom: 0;
+    &:hover {
+        background-color: var(--neutral-alpha-weak); /* Fondo sutil al pasar ratón */
+        
+        .arrowIcon {
+            opacity: 1;
+            transform: translateX(5px); /* La flecha se mueve a la derecha */
+            color: #ffffff !important;
+        }
     }
 }

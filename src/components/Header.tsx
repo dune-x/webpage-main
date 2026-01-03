@@ -1,226 +1,180 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-
-import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
-
-import { routes, display, person, about, blog, work, gallery } from "@/resources";
-import { ThemeToggle } from "./ThemeToggle";
+import { useState } from "react";
+import { Flex, Button, SmartLink, Text, Icon } from "@once-ui-system/core"; 
+import { routes } from "@/resources";
 import styles from "./Header.module.scss";
-import { patrocinadores } from "@/resources/content";
-
-type TimeDisplayProps = {
-  timeZone: string;
-  locale?: string; // Optionally allow locale, defaulting to 'en-GB'
-};
-
-const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
-  const [currentTime, setCurrentTime] = useState("");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      };
-      const timeString = new Intl.DateTimeFormat(locale, options).format(now);
-      setCurrentTime(timeString);
-    };
-
-    updateTime();
-    const intervalId = setInterval(updateTime, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [timeZone, locale]);
-
-  return <>{currentTime}</>;
-};
-
-export default TimeDisplay;
 
 export const Header = () => {
-  const pathname = usePathname() ?? "";
+    const pathname = usePathname() ?? "";
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  return (
-    <>
-      <Fade s={{ hide: true }} fillWidth position="fixed" height="80" zIndex={9} />
-      <Fade
-        hide
-        s={{ hide: false }}
-        fillWidth
-        position="fixed"
-        bottom="0"
-        to="top"
-        height="80"
-        zIndex={9}
-      />
-      <Row
-        fitHeight
-        className={styles.position}
-        position="sticky"
-        as="header"
-        zIndex={9}
-        fillWidth
-        padding="8"
-        horizontal="center"
-        data-border="rounded"
-        s={{
-          position: "fixed",
-        }}
-      >
-        <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
-        </Row>
-        <Row fillWidth horizontal="center">
-          <Row
-            background="page"
-            border="neutral-alpha-weak"
-            radius="m-4"
-            shadow="l"
-            padding="4"
-            horizontal="center"
-            zIndex={1}
-          >
-            <Row gap="4" vertical="center" textVariant="body-default-s" suppressHydrationWarning>
-              {routes["/"] && (
-                <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
-              )}
-              <Line background="neutral-alpha-medium" vert maxHeight="24" />
-              {routes["/about"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="team"
-                      href="/about"
-                      label={about.label}
-                      selected={pathname === "/about"} 
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="team"
-                      href="/about"
-                      selected={pathname === "/about"} 
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/uniraid2026"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="mapmarked"
-                      href="/uniraid2026"
-                      label={"Uniraid 2026"}
-                      selected={pathname.startsWith("/uniraid2026")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="mapmarked"
-                      href="/uniraid2026"
-                      selected={pathname.startsWith("/uniraid2026")}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/work"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="gantt"
-                      href="/work"
-                      label={work.label}
-                      selected={pathname.startsWith("/work")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="gantt"
-                      href="/work"
-                      selected={pathname.startsWith("/work")}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/blog"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="book"
-                      href="/blog"
-                      label={blog.label}
-                      selected={pathname.startsWith("/blog")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="book"
-                      href="/blog"
-                      selected={pathname.startsWith("/blog")}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/patrocinadores"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="handshelp"
-                      href="/patrocinadores"
-                      label={patrocinadores.label}
-                      selected={pathname.startsWith("/patrocinadores")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="handshelp"
-                      href="/patrocinadores"
-                      selected={pathname.startsWith("/patrocinadores")}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/gallery"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="gallery"
-                      href="/gallery"
-                      label={gallery.label}
-                      selected={pathname.startsWith("/gallery")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="gallery"
-                      href="/gallery"
-                      selected={pathname.startsWith("/gallery")}
-                    />
-                  </Row>
-                </>
-              )}
-              
-            </Row>
-          </Row>
-        </Row>
-        <Flex fillWidth horizontal="end" vertical="center">
-          <Flex
-            paddingRight="12"
-            horizontal="end"
-            vertical="center"
-            textVariant="body-default-s"
-            gap="20"
-          >
-            <Flex s={{ hide: true }}>
+    const navLinks = [
+        { href: "/", icon: "home", label: "Inicio", route: "/" },
+        { href: "/about", icon: "team", label: "Sobre Nosotros", route: "/about" },
+        { href: "/uniraid2026", icon: "mapmarked", label: "Uniraid 2026", route: "/uniraid2026" },
+        { href: "/work", icon: "gantt", label: "Proyectos", route: "/work" },
+        { href: "/blog", icon: "book", label: "Blog", route: "/blog" },
+        { href: "/patrocinadores", icon: "handshelp", label: "Patrocinadores", route: "/patrocinadores" },
+        { href: "/gallery", icon: "gallery", label: "Galería", route: "/gallery" },
+    ];
+
+    return (
+        <Flex
+            as="header"
+            className={styles.headerContainer}
+            direction="column"
+        >
+            {/* --- BARRA PRINCIPAL --- */}
+            <Flex
+                fillWidth
+                paddingX="32"
+                paddingY="12"
+                vertical="center"
+                horizontal="between"
+                minHeight="80"
+            >
+                {/* 1. IZQUIERDA */}
+                <Flex vertical="center">
+                    <SmartLink href="/" className={styles.desktopOnly} style={{ alignItems: 'center' }}>
+                        <img src="/images/logo.png" alt="Dune X" className={styles.desktopLogo} />
+                    </SmartLink>
+
+                    <div className={styles.mobileOnly}>
+                        <div 
+                            className={`${styles.hamburger} ${isMenuOpen ? styles.open : ''}`} 
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        >
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </Flex>
+
+                {/* 2. CENTRO (Solo Desktop) */}
+                <Flex 
+                    gap="40" 
+                    vertical="center" 
+                    className={styles.desktopOnly} 
+                >
+                    {/* CORRECCIÓN 1 AQUÍ: as keyof typeof routes */}
+                    {navLinks.map((link) => routes[link.route as keyof typeof routes] && (
+                        <SmartLink 
+                            key={link.href}
+                            href={link.href}
+                            className={styles.navLink} 
+                            style={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: '10px', 
+                                color: pathname.startsWith(link.href) ? 'var(--neutral-on-background-strong)' : 'var(--neutral-on-background-medium)' 
+                            }}
+                        >
+                            <Icon name={link.icon as any} size="s" />
+                            <Text variant="body-default-s">{link.label}</Text>
+                        </SmartLink>
+                    ))}
+                </Flex>
+
+                {/* 3. DERECHA */}
+                <Flex vertical="center">
+                    <div className={styles.desktopOnly}>
+                        <Button
+                            href="/contact"
+                            variant="secondary"
+                            size="s"
+                            className={styles.navLink}
+                            style={{ 
+                                backgroundColor: '#C2B280', 
+                                color: '#1a1a1a',
+                                fontWeight: '700'
+                            }}
+                        >
+                            Contacto
+                        </Button>
+                    </div>
+
+                    <SmartLink href="/" className={styles.mobileOnly} style={{ alignItems: 'center' }}>
+                        <img src="/images/logo.png" alt="Dune X" className={styles.mobileLogo} />
+                    </SmartLink>
+                </Flex>
             </Flex>
-          </Flex>
+
+
+            {/* --- DESPLEGABLE MÓVIL --- */}
+            {isMenuOpen && (
+                <Flex
+                    fillWidth
+                    direction="column"
+                    padding="24"
+                    gap="24"
+                    style={{
+                        borderTop: '1px solid var(--neutral-alpha-weak)',
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        backgroundColor: 'var(--page-background)',
+                        boxShadow: 'var(--shadow-l)',
+                        height: 'calc(100vh - 80px)',
+                        zIndex: 998,
+                        overflowY: 'auto'
+                    }}
+                >
+                    <Flex direction="column" gap="8">
+                         {/* CORRECCIÓN 2 AQUÍ: as keyof typeof routes */}
+                        {navLinks.map((link) => routes[link.route as keyof typeof routes] && (
+                            <SmartLink 
+                                key={link.href}
+                                href={link.href} 
+                                onClick={() => setIsMenuOpen(false)}
+                                className={styles.mobileLinkItem}
+                                style={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'space-between',
+                                    padding: '16px',
+                                    borderBottom: '0px solid var(--neutral-alpha-weak)',
+                                    color: '#fbfbfbff',
+                                    textDecoration: 'none'
+                                }}
+                            >
+                                <Flex vertical="center" gap="16">
+                                    <Icon name={link.icon as any} size="m" style={{ color: '#C2B280'}} />
+                                    <Text variant="body-strong-s" className={styles.navLink} style={{ fontSize: '1.2rem' }}>
+                                        {link.label}
+                                    </Text>
+                                </Flex>
+
+                                <Icon 
+                                    name="chevronRight" 
+                                    size="m" 
+                                    className={styles.arrowIcon}
+                                />
+                            </SmartLink>
+                        ))}
+                    </Flex>
+
+                    <Flex paddingTop="12" paddingBottom="48">
+                         <Button
+                            href="/contact"
+                            variant="primary"
+                            size="l"
+                            fillWidth
+                            className={styles.navLink}
+                            style={{ 
+                                backgroundColor: '#C2B280', 
+                                color: '#1a1a1a',
+                                fontWeight: '700',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            Contacto
+                        </Button>
+                    </Flex>
+                </Flex>
+            )}
         </Flex>
-      </Row>
-    </>
-  );
+    );
 };
