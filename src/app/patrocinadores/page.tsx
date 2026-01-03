@@ -25,7 +25,7 @@ const bigSponsors = [
   },
   {
     name: "EIC",
-    src: "/images/sponsors/EIC.png",
+    src: "/images/sponsors/EIC.svg",
     href: "https://eic.cat",
     description:
       (<>Comunidad y soporte tecnológico para impulsar innovación y proyectos técnicos.</>),

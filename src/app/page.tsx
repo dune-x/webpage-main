@@ -36,7 +36,7 @@ export async function generateMetadata() {
 
 const sponsors = [
   { icon: "/images/sponsors/CIMWORKS.webp", href: "https://www.cimworks.es" },
-  { icon: "/images/sponsors/EIC.png", href: "https://eic.cat" },
+  { icon: "/images/sponsors/EIC.svg", href: "https://eic.cat" },
   { icon: "/images/sponsors/luis capdevila.webp", href: "https://luiscapdevila.es" },
   { icon: "/images/sponsors/garden.png", href: "https://www.gardenhotels.com" },
   { icon: "/images/sponsors/AIRFIRE.png", href: "https://www.airfire.es" },
@@ -127,7 +127,7 @@ export default function Home() {
           <RevealFx translateY="12" delay={0.5} fillWidth horizontal="center" paddingTop="32">
             <Column
               fillWidth
-              maxWidth="s"
+              maxWidth="m"
               style={{
                 aspectRatio: "16 / 9",
                 borderRadius: 24,
@@ -135,7 +135,7 @@ export default function Home() {
               }}
             >
               <iframe
-                src="https://www.youtube.com/embed/gET1pKnVVLA"
+                src="https://www.youtube.com/embed/gET1pKnVVLA?autoplay=1&mute=1"
                 title="Video presentación Dune-X"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
@@ -144,6 +144,7 @@ export default function Home() {
                   height: "100%",
                   border: 0,
                 }}
+                
               />
             </Column>
           </RevealFx>

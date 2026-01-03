@@ -79,6 +79,11 @@ export default function HeroCountdown() {
             </div>
           </div>
 
+          {/* DIVISOR */}
+          <div className="separatorWrapper">
+            <div className="separator" />
+          </div>
+
           {/* DERECHA */}
           <div className="right">
             <div className="timeGrid" aria-label="Cuenta atrás">
@@ -100,15 +105,18 @@ export default function HeroCountdown() {
             backdrop-filter: blur(10px);
 
             display: grid;
-            grid-template-columns: minmax(260px, 360px) 1fr;
-            gap: 24px;
-            align-items: center;
+            /* Layout PC: Columna Izq | Separador | Columna Der */
+            grid-template-columns: minmax(260px, 360px) auto 1fr;
+            gap: 0;
+            align-items: stretch;
           }
 
+          /* --- IZQUIERDA --- */
           .left {
             display: grid;
             gap: 10px;
             align-content: center;
+            padding-right: 12px;
           }
 
           .kicker {
@@ -123,67 +131,144 @@ export default function HeroCountdown() {
           .logoWrap {
             width: 100%;
             max-width: 340px;
+            /* Padding lateral para que el logo respire */
+            padding: 0 40px; 
+            box-sizing: border-box;
           }
 
+          /* --- SEPARADOR --- */
+          .separatorWrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+          }
+
+          .separator {
+            width: 1px;
+            height: 80%;
+            background: linear-gradient(
+              to bottom, 
+              rgba(255,255,255,0) 0%, 
+              rgba(255,255,255,0.2) 20%, 
+              rgba(255,255,255,0.2) 80%, 
+              rgba(255,255,255,0) 100%
+            );
+            transform-origin: center;
+            animation: scaleIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+          }
+
+          @keyframes scaleIn {
+            0% { transform: scaleY(0); opacity: 0; }
+            100% { transform: scaleY(1); opacity: 1; }
+          }
+
+          /* --- DERECHA --- */
           .right {
             display: flex;
-            justify-content: center;
+            justify-content: center; /* Centra el grid dentro de la columna */
+            align-items: center;
             width: 100%;
+            padding-left: 12px;
           }
 
           .timeGrid {
             width: 100%;
             max-width: 520px;
             display: grid;
-            grid-template-columns: repeat(4, minmax(96px, 1fr));
-            gap: 22px;
+            grid-template-columns: repeat(4, minmax(80px, 1fr));
+            gap: 16px;
             justify-items: center;
             align-items: center;
           }
 
           .timeBox {
-            min-width: 96px;
+            min-width: 80px;
             width: 100%;
             display: grid;
             justify-items: center;
             gap: 6px;
-            padding: 10px 10px;
+            padding: 10px 6px;
             border-radius: 18px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
           }
 
+          /* --- MÓVIL / TABLET (<900px) --- */
           @media (max-width: 900px) {
             .card {
               grid-template-columns: 1fr;
-              gap: 18px;
+              gap: 0;
+            }
+
+            .left {
+              padding-right: 0;
+              padding-bottom: 18px;
+              
+              /* CENTRADO PERFECTO DEL CONTENIDO IZQUIERDO */
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
             }
 
             .logoWrap {
-              max-width: 300px;
+              /* Mantener el padding pero asegurar margin auto */
+              margin: 0 auto;
+              padding: 0 20px; 
+              max-width: 280px; /* Un poco más pequeño en móvil para que encaje mejor */
             }
 
             .right {
+              padding-left: 0;
+              padding-top: 18px;
+              /* Asegura que el contenedor flexible centre su contenido hijo */
               justify-content: center;
             }
 
+            /* Separador Horizontal */
+            .separatorWrapper {
+              width: 100%;
+              height: 1px;
+              padding: 0;
+            }
+
+            .separator {
+              width: 80%;
+              height: 1px;
+              background: linear-gradient(
+                to right, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.2) 20%, 
+                rgba(255,255,255,0.2) 80%, 
+                rgba(255,255,255,0) 100%
+              );
+              animation: scaleInX 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            }
+
+            @keyframes scaleInX {
+              0% { transform: scaleX(0); opacity: 0; }
+              100% { transform: scaleX(1); opacity: 1; }
+            }
+
             .timeGrid {
+              /* Volver al comportamiento standard de flex centrado */
               display: flex;
+              justify-content: center;
+              gap: 12px;
+              padding: 4px;
+              
+              /* Scroll solo si es necesario, pero intentando centrar primero */
               flex-wrap: nowrap;
-              gap: 14px;
-              max-width: 100%;
               overflow-x: auto;
-              overflow-y: hidden;
               -webkit-overflow-scrolling: touch;
-              padding: 2px 2px 10px;
-              scroll-snap-type: x mandatory;
+              max-width: 100%;
             }
 
             .timeBox {
               flex: 0 0 auto;
-              min-width: 110px;
-              scroll-snap-align: center;
-              padding: 12px 10px;
+              min-width: 90px;
             }
           }
 
@@ -191,14 +276,9 @@ export default function HeroCountdown() {
             .card {
               padding: 18px;
             }
-
+            /* En pantallas muy pequeñas, alineamos a la izquierda el scroll para que se vea el primer elemento */
             .timeGrid {
-              gap: 12px;
-            }
-
-            .timeBox {
-              min-width: 104px;
-              border-radius: 16px;
+                justify-content: flex-start;
             }
           }
         `}</style>
