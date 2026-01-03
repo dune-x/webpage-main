@@ -90,21 +90,21 @@ export const Header = () => {
                 <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
               )}
               <Line background="neutral-alpha-medium" vert maxHeight="24" />
-              {routes["/about"] && (
+              {routes["/sobre-el-equipo"] && (
                 <>
                   <Row s={{ hide: true }}>
                     <ToggleButton
                       prefixIcon="team"
-                      href="/about"
+                      href="/sobre-el-equipo"
                       label={about.label}
-                      selected={pathname === "/about"} 
+                      selected={pathname === "/sobre-el-equipo"} 
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
                       prefixIcon="team"
-                      href="/about"
-                      selected={pathname === "/about"} 
+                      href="/sobre-el-equipo"
+                      selected={pathname === "/sobre-el-equipo"} 
                     />
                   </Row>
                 </>

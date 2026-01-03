@@ -18,7 +18,7 @@ const baseURL: string = "https://dune-x.com";
 
 const routes: RoutesConfig = {
   "/": true,
-  "/about": true,
+  "/sobre-el-equipo": true,
   "/work": true,
   "/blog": true,
   "/gallery": true,

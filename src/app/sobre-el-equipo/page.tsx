@@ -13,8 +13,8 @@ import {
   Row,
 } from "@once-ui-system/core";
 import { baseURL, about, person, social } from "@/resources";
-import TableOfContents from "@/components/about/TableOfContents";
-import styles from "@/components/about/about.module.scss";
+import TableOfContents from "@/components/sobre-el-equipo/TableOfContents";
+import styles from "@/components/sobre-el-equipo/about.module.scss";
 import React from "react";
 
 export async function generateMetadata() {
