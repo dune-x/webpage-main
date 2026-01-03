@@ -42,7 +42,7 @@ const sponsors = [
   { icon: "/images/sponsors/AIRFIRE.png", href: "https://www.airfire.es" },
   { icon: "/images/sponsors/ETSEIB.png", href: "https://etseib.upc.edu" },
   { icon: "/images/sponsors/Joan i Jordi.png", href: "https://joanijordi.com" },
-  { icon: "/images/sponsors/Luna.jpg", href: "https://www.instagram.com/lunamoda__" },
+  { icon: "/images/sponsors/Luna.png", href: "https://www.instagram.com/lunamoda__" },
   { icon: "/images/sponsors/ABRIL.png", href: "https://www.disabril.com/" },
   { icon: "/images/sponsors/MOAUTO.png" },
 ];

@@ -109,27 +109,33 @@ export default function SponsorGrid({
           content: none !important;
         }
 
-        /* =========================
-           HEADER LOGO
-           ========================= */
+          /* =========================
+          HEADER LOGO (CORREGIDO)
+          ========================= */
         .headerLogo {
-          width: 140px;
-          height: 52px;
+          /* Eliminamos el width fijo y usamos max-width */
+          width: auto;            
+          max-width: 140px;       
+          height: 52px;           
+          
           display: flex;
           align-items: center;
-          justify-content: flex-start;
+          justify-content: center; /* Centramos el logo en su espacio */
+          
           border-radius: 0 !important;
           overflow: visible !important;
-          flex-shrink: 0;     /* <- CLAVE */
-          min-width: 140px;   /* <- CLAVE */
-
+          
+          /* Ajustamos flex-shrink para que no desaparezca si falta espacio */
+          flex-shrink: 0;
         }
 
+        /* Opcional: Si quieres que los logos cuadrados se vean un poco más grandes, 
+          puedes permitir que crezcan un poco en altura */
         .headerLogo img {
-          width: 100% !important;
-          height: 100% !important;
+          width: auto !important;      /* Deja que el ancho fluya */
+          height: 100% !important;     /* Llena la altura disponible */
+          max-width: 100%;             /* Pero no te pases del contenedor */
           object-fit: contain !important;
-          border-radius: 0 !important;
         }
       `}</style>
 
