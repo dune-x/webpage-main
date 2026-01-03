@@ -14,7 +14,7 @@ import {
   Logo,
 } from "@once-ui-system/core";
 
-import RaidMapClient from "@/app/uniraid2026/RaidMapClient.tsx";
+import RaidMapClient from "@/app/uniraid2026/RaidMapClient";
 import CountdownLaunch from "@/components/CountdownLaunch";
 import HeroCountdown from "@/components/hero/HeroCountdown";
 import Metrics from "@/components/Metrics";
