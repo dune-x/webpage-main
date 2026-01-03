@@ -72,10 +72,11 @@ export default function UniRaid2026Page() {
         {/* Logo centrado */}
         <Column
           align="center"
-          justify="center"
           style={{
             width: "100%",
             minHeight: 220,
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           <Image
