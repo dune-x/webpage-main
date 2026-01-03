@@ -71,7 +71,7 @@ const smallSponsors = [
   {
     name: "Luna Moda",
     src: "/images/sponsors/Luna.jpg",
-    href: "https://www.instagram.com/lunamoda__",
+    href: "https://www.instagram.com/lopez.luna.ana",
     description:
       (<>Ubicada en pleno corazón de Ciutadella (C/ de la Pau, 2), LUNA MODA es una tienda de ropa de referencia por su trato impecable y “top” que los hace únicos en la isla. ✨. Pero lo que hace que esta colaboración sea realmente especial es su compromiso social. Se unen a nuestra expedición aportando material solidario para los niños de los pueblos que recorreremos durante el raid. Nuestra prioridad será entregarles artículos para que jueguen y se diviertan, transformando el apoyo de LUNA MODA en sonrisas directas en mitad del desierto. 🧸🌵</>),
   },
@@ -80,7 +80,7 @@ const smallSponsors = [
     src: "/images/sponsors/ABRIL.png",
     href: "https://www.disabril.com/",
     description:
-      (<>Distribución y soporte para material y logística del proyecto.</>),
+      (<>Con sede en Barcelona (C/ Viladomat, 74), Abril Distribuciones Cárnicas es una empresa familiar con más de 70 años de trayectoria en el sector cárnico. 🍖✨ Especialistas en la distribución mayorista de carnes y embutidos de alta calidad, combinan tradición, experiencia y un profundo conocimiento del producto para ofrecer un servicio cercano y profesional a sus clientes. Su compromiso con la calidad y el trato directo los ha convertido en un referente para el canal profesional de la alimentación, manteniendo viva la esencia de un oficio transmitido de generación en generación.</>),
   },
   {
     name: "MOAUTO",
