@@ -642,9 +642,9 @@ function renderSchedule(){
                 </td>
                 <td>
                   <div class="scoreBox">
-                    <input class="score ${clsA}" type="number" min="0" max="9" value="${r.scoreA}" data-side="A"/>
+                    <input class="score ${clsA}" type="number" min="0" max="99" value="${r.scoreA}" data-side="A"/>
                     <span class="small">-</span>
-                    <input class="score ${clsB}" type="number" min="0" max="9" value="${r.scoreB}" data-side="B"/>
+                    <input class="score ${clsB}" type="number" min="0" max="99" value="${r.scoreB}" data-side="B"/>
                   </div>
                 </td>
               </tr>`;
@@ -896,11 +896,11 @@ function renderBracketTree(which, mountId){
         <div class="matchTeams">
           <div class="teamLine">
             <span class="teamName">${name(m.a)}</span>
-            <input class="scoreMini" type="number" min="0" max="9" value="${m.scoreA||0}" data-side="A">
+            <input class="scoreMini" type="number" min="0" max="99" value="${m.scoreA||0}" data-side="A">
           </div>
           <div class="teamLine">
             <span class="teamName">${name(m.b)}</span>
-            <input class="scoreMini" type="number" min="0" max="9" value="${m.scoreB||0}" data-side="B">
+            <input class="scoreMini" type="number" min="0" max="99" value="${m.scoreB||0}" data-side="B">
           </div>
         </div>
         <div class="matchActions">
