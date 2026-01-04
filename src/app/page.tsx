@@ -151,12 +151,12 @@ export default function Home() {
           </RevealFx>
 <Line marginY="64" />
 <ScrollReveal>
-            <RevealFx translateY={0.5} delay={0.0} horizontal="center" paddingTop="32">
+            <RevealFx translateY={0.5} delay={0.01} horizontal="center" paddingTop="32">
               <HeroCountdown />
             </RevealFx>
           </ScrollReveal>
 <ScrollReveal>
-<RevealFx translateY={0.5} delay={0.0} fillWidth paddingTop="24">
+<RevealFx translateY={0.5} delay={0.01} fillWidth paddingTop="24">
   <Column
     fillWidth
     maxWidth="l"
