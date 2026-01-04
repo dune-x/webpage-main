@@ -23,6 +23,7 @@ import { Mailchimp } from "@/components";
 import { Projects } from "@/components/work/Projects";
 import { Posts } from "@/components/blog/Posts";
 import HeroSwitch from "@/components/hero/HeroSwitch";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -149,11 +150,13 @@ export default function Home() {
             </Column>
           </RevealFx>
 <Line marginY="64" />
-<RevealFx translateY={1} delay={0.6} horizontal="center" paddingTop="32">
-  <HeroCountdown />
-</RevealFx>
-{/* Métricas justo debajo del countdown */}
-<RevealFx translateY={1} delay={0.7} fillWidth paddingTop="24">
+<ScrollReveal>
+            <RevealFx translateY={0.5} delay={0.0} horizontal="center" paddingTop="32">
+              <HeroCountdown />
+            </RevealFx>
+          </ScrollReveal>
+<ScrollReveal>
+<RevealFx translateY={0.5} delay={0.0} fillWidth paddingTop="24">
   <Column
     fillWidth
     maxWidth="l"
@@ -163,7 +166,7 @@ export default function Home() {
     <Metrics />
   </Column>
 </RevealFx>
-
+</ScrollReveal>
 <Line marginY="40" />
 
           <Heading paddingY="0" variant="display-strong-s" align="left" onBackground="neutral-strong">

@@ -99,7 +99,10 @@ export default function UniRaid2026Page() {
       </Row>
 
       <Heading variant="display-strong-s">Ruta del raid</Heading>
-
+      <Text onBackground="neutral-weak">
+            Este mapa muestra la ruta del raid Uniraid 2026, con selector de ruta para ver cada etapa por separado. <br />
+            La ruta es aproximada, ya que aun es un misterio para nosotros, en cuanto vayamos avanzando en la aventura, iremos registrando nuestro propio camino, y lo actualizaremos aquí.
+          </Text>
       <RaidMapClient />
     </Column>
   );

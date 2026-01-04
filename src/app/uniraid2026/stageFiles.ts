@@ -2,11 +2,16 @@ export type StageFile = {
   id: number;
   name: string;
   file: string; // nombre del KMZ dentro de stages-kmz
+  type: "trip" | "stage";
+  description?: string;
 };
 
 export const stageFiles: StageFile[] = [
-  { id: 1, name: "El Hajeb → Aufous (Etapa 1)", file: "01-el-hajeb-aufous.geojson" },
-  { id: 2, name: "Aufous → Hassi (Etapa 2)", file: "02-aufous-hassi.geojson" },
-  { id: 3, name: "Hassi  → Erg Chebbi (Etapa 3)", file: "03-hassi-erg-chebbi.geojson" },
-  { id: 4, name: "Erg Chebbi → Nkob (Etapa 4)", file: "04-erg-chebbi-nkob.geojson" },
+  { id: 1, name: "Pre-Uniraid", file: "XX-barcelona-algeciras.kml", type: "trip", description: "Barcelona → Algeciras" },
+  { id: 2, name: "Etapa 0", file: "00-algeciras-azrou.kml", type: "trip", description: "Algeciras → Azrou" },
+  { id: 3, name: "Etapa 1", file: "01-azrou-errachidia.kml", type: "stage", description: "Azrou → Errachidia" },
+  { id: 4, name: "Etapa 2", file: "02-errachidia-erg-chebbi.kml", type: "stage", description: "Errachidia → Erg Chebbi" },
+  { id: 5, name: "Etapa 4-5", file: "05-erg-chebbi-nkob.kml", type: "stage", description: "Erg Chebbi → Nkob" },
+  { id: 6, name: "Etapa 6", file: "06-nkob-marrakech.kml", type: "stage", description: "Nkob → Marrakech" },
+  //{ id: 7, name: "Post-Uniraid", file: "XX-marrakech-barcelona.kml", type: "trip", description: "Marrakech → Barcelona" },
 ];
