@@ -4,6 +4,7 @@ import {
   Heading,
   Line,
   Meta,
+  RevealFx,
   Row,
   Schema,
   Text,
@@ -103,7 +104,7 @@ export async function generateMetadata() {
 
 export default function PatrocinadoresPage() {
   return (
-    <Column maxWidth="m" paddingY="12" gap="xl">
+    <Column maxWidth="l" paddingY="12" gap="l" horizontal="center">
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -119,17 +120,28 @@ export default function PatrocinadoresPage() {
           image: `${baseURL}/images/logo.png`,
         }}
       />
-
-      <Column gap="m">
-        <Heading variant="display-strong-l">Patrocinadores</Heading>
-        <Text variant="body-default-l" onBackground="neutral-weak">
-          El proyecto Dune-X no sería posible sin el apoyo de las empresas y entidades que creen en nosotros.<br/>
+      <Column fillWidth gap="xl" paddingX="l" horizontal="center">
+        <Column horizontal="center" gap="16">
+        <Column horizontal="center" gap="16">
+            <RevealFx translateY={16}>
+                <Heading variant="display-strong-l" align="center">
+                    Patrocinadores
+                </Heading>
+            </RevealFx>
+            </Column>
+            <RevealFx delay={0.2} translateY={16}>
+                <Column horizontal="center" maxWidth="m">
+                    <Text variant="heading-default-s" onBackground="neutral-weak" style={{ textAlign: "center" }}>
+                        El proyecto Dune-X no sería posible sin el apoyo de las empresas y entidades que creen en nosotros.<br/>
           Gracias a sus aportaciones —económicas, materiales y logísticas— podemos preparar nuestros vehículos, llevar ayuda solidaria a las aldeas del desierto y vivir una experiencia humana y formativa única.
-        </Text>
+                    </Text>
+                </Column>
+            </RevealFx>
+        </Column>
       </Column>
 
-      <Row fillWidth paddingRight="64">
-        <Line maxWidth={48} />
+      <Row fillWidth>
+        <Line/>
       </Row>
 
       {/* Big */}

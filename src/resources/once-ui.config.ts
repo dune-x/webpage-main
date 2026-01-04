@@ -25,6 +25,7 @@ const routes: RoutesConfig = {
   "/patrocinadores": true,
   "/uniraid2026": true,
   "/torneo": true,
+  "/unete": true,
 };
 
 const display: DisplayConfig = {
