@@ -212,7 +212,8 @@ export default function RaidMapClient() {
   }, [drawnCoords]);
 
   /* ---------- Fit bounds ---------- */
-  useEffect(() => {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
     if (!mapLoaded || !stages.length) return;
     const map = mapRef.current;
     if (!map) return;

@@ -14,7 +14,7 @@ import {
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers } from "@/components";
+import { Footer, Header, RouteGuard, Providers, SandParticles } from "@/components";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
 
 export async function generateMetadata() {
@@ -113,6 +113,7 @@ localStorage.setItem('data-theme', 'dark');
           padding="0"
           horizontal="center"
         >
+          <SandParticles />
           <RevealFx fill position="absolute">
             <Background
               mask={{
