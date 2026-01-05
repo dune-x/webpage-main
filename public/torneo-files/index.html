@@ -197,8 +197,8 @@
     <button class="tab active" data-tab="schedule">Grupos</button>
     <button class="tab" data-tab="leaderboard">Clasificación</button>
     <button class="tab" data-tab="finals">Eliminatorias</button>
-    <button class="tab" data-tab="config">Config Pistas</button>
     <button class="tab" data-tab="courts">Pistas</button>
+    <button class="tab" data-tab="config" id="tabConfig" style="display:none; margin-left:auto;">Config Pistas</button>
   </div>
 
   <div id="schedule" class="panel active">
@@ -328,6 +328,16 @@ function applyEditLock(){
   byId("adminState").textContent = isAdmin ? "Modo: ADMIN (EDITANDO)" : "Modo: SOLO LECTURA";
   byId("btnLogout").style.display = isAdmin ? "inline-block" : "none";
   byId("autoRefreshState").textContent = isAdmin ? "OFF" : "ON";
+
+  // Toggle config tab
+  const tabConfig = byId("tabConfig");
+  if(tabConfig) {
+      tabConfig.style.display = isAdmin ? "block" : "none";
+      if(!isAdmin && tabConfig.classList.contains("active")){
+          // Si estamos en config y salimos de admin, volver a inicio
+          document.querySelector('button[data-tab="schedule"]').click();
+      }
+  }
 }
 
 /** API */
