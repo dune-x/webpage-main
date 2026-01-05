@@ -2,7 +2,7 @@
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { Button, Row, Column, Text } from "@once-ui-system/core";
+import { Button, Row, Column, Text, Switch, IconButton, Icon } from "@once-ui-system/core";
 import Map, { Layer, MapRef, Source } from "react-map-gl/mapbox";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -108,6 +108,10 @@ export default function RaidMapClient() {
   const [stages, setStages] = useState<Stage[]>([]);
   const [stageId, setStageId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isFlying, setIsFlying] = useState(false);
+  
+  // Style switcher: 'satellite' | 'outdoor'
+  const [mapStyle, setMapStyle] = useState<string>("mapbox://styles/mapbox/satellite-streets-v12");
 
   // Selector state: 'trip', 'stage', or 'all'
   // Default to 'all'
@@ -180,6 +184,9 @@ export default function RaidMapClient() {
   
   // Update animation when stage changes
   useEffect(() => {
+    // If flying, we handle animation differently below
+    if (isFlying) return;
+
     if (selectedType === "all" || !stage?.coords?.length) {
        setDrawnCoords([]);
        return;
@@ -204,7 +211,68 @@ export default function RaidMapClient() {
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [stageId, selectedType, stage]); // Dependency update
+  }, [stageId, selectedType, stage, isFlying]); 
+
+  // FLYOVER ANIMATION
+  useEffect(() => {
+    if (!isFlying || !stage?.coords?.length) return;
+    
+    const map = mapRef.current;
+    if(!map) return;
+
+    const coords = stage.coords;
+    const totalPoints = coords.length;
+    // Slower speed: 40s duration
+    const durationMs = 80000; 
+
+    let raf = 0;
+    const start = performance.now();
+
+    // Initial camera tilt & zoom
+    map.easeTo({
+        pitch: 60,
+        zoom: 17.5,
+        duration: 1000
+    });
+
+    const tick = (t: number) => {
+        const elapsed = t - start;
+        const p = Math.min(1, elapsed / durationMs);
+        const count = Math.max(1, Math.floor(p * totalPoints));
+        
+        const currentSlice = coords.slice(0, count);
+        setDrawnCoords(currentSlice);
+
+        // Follow camera
+        if (count > 0 && count < totalPoints) {
+            const center = coords[count - 1];
+            map.easeTo({
+                center: center,
+                pitch: 60,
+                bearing: p * 200, // Rotate slowly (0 -> 60 degrees)
+                zoom: 13.5,
+                duration: 0, 
+                easing: (x) => x
+            });
+        }
+
+        if (p < 1) {
+            raf = requestAnimationFrame(tick);
+        } else {
+            setIsFlying(false);
+            setDrawnCoords(coords);
+            // Reset to overview
+            map.easeTo({ pitch: 40, zoom: 9, bearing: 0, duration: 2000 });
+        }
+    };
+
+    // Delay start slightly for easeTo 
+    setTimeout(() => {
+        raf = requestAnimationFrame(tick);
+    }, 500);
+
+    return () => cancelAnimationFrame(raf);
+  }, [isFlying, stage]);
 
   const drawnKm = useMemo(() => {
     if (!drawnCoords.length) return 0;
@@ -367,7 +435,8 @@ export default function RaidMapClient() {
             ref={mapRef}
             onLoad={() => setMapLoaded(true)}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-            mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
+            
+            mapStyle={mapStyle}
             initialViewState={{
                 longitude: -5.2,
                 latitude: 32.7,
@@ -470,6 +539,30 @@ export default function RaidMapClient() {
                 </Popup>
             )}
             </Map>
+
+            {/* STYLE SWITCHER */}
+            <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 1, background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(4px)', padding: '6px 12px', borderRadius: 32, display: 'flex', alignItems: 'center', gap: 8 }}>
+               <Text variant="label-default-s" style={{color: '#000', opacity: 0.7}}>Sat</Text>
+               <Switch
+                  isChecked={!mapStyle.includes('satellite')}
+                  onToggle={() => setMapStyle(prev => prev.includes('satellite') ? "mapbox://styles/dune-x/cmk136e55004t01sg9xc0fj1u" : "mapbox://styles/mapbox/satellite-streets-v12")}
+               />
+
+               <Text variant="label-default-s" style={{color: '#000', opacity: 0.7}}>Topo</Text>
+            </div>
+
+            {/* FLYOVER BUTTON (Only when single stage active) */}
+            {selectedType !== 'all' && (
+                <div style={{ position: 'absolute', bottom: 32, right: 16, zIndex: 1 }}>
+                    <IconButton
+                        variant="primary"
+                        size="l"
+                        icon={isFlying ? "stop" : "play"}
+                        onClick={() => setIsFlying(!isFlying)}
+                        tooltip="Vista de pájaro"
+                    />
+                </div>
+            )}
         </div>
       </Column>
       
