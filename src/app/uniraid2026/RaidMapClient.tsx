@@ -2,7 +2,7 @@
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { Button, Row, Column, Text, Switch, IconButton, Icon } from "@once-ui-system/core";
+import { Button, Row, Column, Text, Switch, IconButton, Icon, Slider } from "@once-ui-system/core";
 import Map, { Layer, MapRef, Source } from "react-map-gl/mapbox";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -110,6 +110,18 @@ export default function RaidMapClient() {
   const [error, setError] = useState<string | null>(null);
   const [isFlying, setIsFlying] = useState(false);
   
+  // Flyover controls
+  const [flyZoom, setFlyZoom] = useState(17.5); // Default zoom
+  const [flySpeed, setFlySpeed] = useState(25);  // Km/h. Default 25.
+
+  // Refs for animation loop access
+  const flyZoomRef = useRef(flyZoom);
+  const flySpeedRef = useRef(flySpeed);
+  const progressRef = useRef(0);
+
+  useEffect(() => { flyZoomRef.current = flyZoom; }, [flyZoom]);
+  useEffect(() => { flySpeedRef.current = flySpeed; }, [flySpeed]);
+  
   // Style switcher: 'satellite' | 'outdoor'
   const [mapStyle, setMapStyle] = useState<string>("mapbox://styles/mapbox/satellite-streets-v12");
 
@@ -215,42 +227,67 @@ export default function RaidMapClient() {
 
   // FLYOVER ANIMATION
   useEffect(() => {
-    if (!isFlying || !stage?.coords?.length) return;
+    if (!isFlying || !stage?.coords?.length) {
+        progressRef.current = 0; // Reset progress on stop
+        return;
+    }
     
     const map = mapRef.current;
     if(!map) return;
 
     const coords = stage.coords;
     const totalPoints = coords.length;
-    // Slower speed: 40s duration
-    const durationMs = 80000; 
+    
+    // Calculate total distance for accurate speed
+    const totalDistanceKm = routeDistanceKm(coords);
+    const timeMultiplier = 1000; // 1 real sec = 1000 simulated secs
 
     let raf = 0;
-    const start = performance.now();
+    let lastTime = performance.now();
 
     // Initial camera tilt & zoom
     map.easeTo({
         pitch: 60,
-        zoom: 17.5,
+        zoom: flyZoomRef.current,
         duration: 1000
     });
 
-    const tick = (t: number) => {
-        const elapsed = t - start;
-        const p = Math.min(1, elapsed / durationMs);
+    const tick = (time: number) => {
+        const dt = time - lastTime;
+        lastTime = time;
+
+        const currentSpeedKmH = Math.max(10, flySpeedRef.current);
+        
+        // Distance = Speed * Time
+        // Real Time (hours) = (dt / 1000) / 3600
+        // Simulated Time (hours) = Real Time * timeMultiplier
+        const realHours = (dt / 1000) / 3600;
+        const simulatedHours = realHours * timeMultiplier;
+        
+        const distanceStepKm = currentSpeedKmH * simulatedHours;
+        
+        // Fraction of total distance
+        const progressStep = distanceStepKm / (totalDistanceKm || 1); // Avoid div/0
+
+        // Increment progress
+        progressRef.current += progressStep;
+        const p = Math.min(1, progressRef.current);
+        
         const count = Math.max(1, Math.floor(p * totalPoints));
         
         const currentSlice = coords.slice(0, count);
         setDrawnCoords(currentSlice);
+
+        const currentZoom = flyZoomRef.current;
 
         // Follow camera
         if (count > 0 && count < totalPoints) {
             const center = coords[count - 1];
             map.easeTo({
                 center: center,
-                pitch: 60,
-                bearing: p * 200, // Rotate slowly (0 -> 60 degrees)
-                zoom: 13.5,
+                // pitch: 60, // Allow manual pitch
+                // bearing: p * 200, // Allow manual rotation
+                zoom: currentZoom,
                 duration: 0, 
                 easing: (x) => x
             });
@@ -261,6 +298,7 @@ export default function RaidMapClient() {
         } else {
             setIsFlying(false);
             setDrawnCoords(coords);
+            progressRef.current = 0;
             // Reset to overview
             map.easeTo({ pitch: 40, zoom: 9, bearing: 0, duration: 2000 });
         }
@@ -268,6 +306,7 @@ export default function RaidMapClient() {
 
     // Delay start slightly for easeTo 
     setTimeout(() => {
+        lastTime = performance.now(); // Reset time before starting
         raf = requestAnimationFrame(tick);
     }, 500);
 
@@ -551,9 +590,42 @@ export default function RaidMapClient() {
                <Text variant="label-default-s" style={{color: '#000', opacity: 0.7}}>Topo</Text>
             </div>
 
-            {/* FLYOVER BUTTON (Only when single stage active) */}
+            {/* FLYOVER CONTROLS & BUTTON */}
             {selectedType !== 'all' && (
-                <div style={{ position: 'absolute', bottom: 32, right: 16, zIndex: 1 }}>
+                <div style={{ position: 'absolute', bottom: 32, right: 16, zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 16 }}>
+                    
+                    {/* CONTROLS PANEL (Visible when flying or valid stage) */}
+                    {isFlying && (
+                        <div style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)', padding: 16, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 16, minWidth: 260 }}>
+                           <Column gap="4">
+                              <Row horizontal="between">
+                                  <Text variant="label-default-s" style={{color: 'white'}}>Velocidad</Text>
+                                  <Text variant="label-default-s" style={{color: 'white', opacity: 0.7}}>{flySpeed * 10} km/h</Text>
+                              </Row>
+                              <Slider 
+                                 value={flySpeed} 
+                                 onChange={(val: number) => setFlySpeed(val)} 
+                                 min={1} 
+                                 max={50} 
+                                 step={1} 
+                              />
+                           </Column>
+                           <Column gap="4">
+                              <Row horizontal="between">
+                                  <Text variant="label-default-s" style={{color: 'white'}}>Zoom</Text>
+                                  <Text variant="label-default-s" style={{color: 'white', opacity: 0.7}}>{flyZoom.toFixed(1)}</Text>
+                              </Row>
+                              <Slider 
+                                 value={flyZoom} 
+                                 onChange={(val: number) => setFlyZoom(val)} 
+                                 min={10} 
+                                 max={19} 
+                                 step={0.1} 
+                              />
+                           </Column>
+                        </div>
+                    )}
+
                     <IconButton
                         variant="primary"
                         size="l"
