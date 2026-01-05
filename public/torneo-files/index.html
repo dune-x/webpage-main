@@ -294,7 +294,6 @@
 <script>
 /** CONFIG */
 const API_URL = "https://script.google.com/macros/s/AKfycbwn6FevKGZhNK5hY3TwVwOk_y4XflQFJ1kmNCIFGzRWa8GglmTihWl63h3ZE_TjeRJFzg/exec";
-const ADMIN_PASSWORD = "XDUNEX";
 const AUTO_REFRESH_MS = 15000;
 const ALLOWED_REAL_COURTS = [1,2,4,6,8,9,10,11,12,13,14,15];
 
@@ -303,6 +302,7 @@ let teams = [];
 let matches = [];
 let results = {};
 let isAdmin = false;
+let adminPassword = "";
 let dirty = false;
 
 let courtMap = {};
@@ -380,11 +380,8 @@ async function apiSaveAll(){
     alert("Estás en SOLO LECTURA. Pulsa “Entrar como admin” primero.");
     return;
   }
-  const pass = prompt("Contraseña admin (para guardar en servidor):");
-  if(pass !== ADMIN_PASSWORD){
-    alert("❌ Contraseña incorrecta");
-    return;
-  }
+  const pass = adminPassword || prompt("Contraseña admin (para guardar en servidor):");
+  if(!pass) return;
 
   byId("serverState").textContent = "Guardando…";
   try{
@@ -410,11 +407,8 @@ async function apiSaveConfig(){
     alert("Solo admin.");
     return;
   }
-  const pass = prompt("Contraseña admin (para guardar config):");
-  if(pass !== ADMIN_PASSWORD){
-    alert("❌ Contraseña incorrecta");
-    return;
-  }
+  const pass = adminPassword || prompt("Contraseña admin (para guardar config):");
+  if(!pass) return;
   byId("serverState").textContent = "Guardando config…";
   try{
     const payload = { password: pass, courtMap, groupConfig };
@@ -1102,13 +1096,29 @@ document.querySelectorAll(".tab").forEach(btn => {
 });
 
 /** ADMIN */
-byId("btnAdmin").addEventListener("click", () => {
+byId("btnAdmin").addEventListener("click", async () => {
   const pass = prompt("Contraseña admin:");
-  if(pass === ADMIN_PASSWORD){
-    isAdmin = true;
-    applyEditLock();
-    alert("✅ Modo admin activado");
-  }else alert("❌ Contraseña incorrecta");
+  if(!pass) return;
+
+  try {
+     // Validar contra API de Next.js para que no sea visible en código cliente
+     const res = await fetch('/api/torneo/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pass })
+     });
+     const data = await res.json();
+     if(data.success){
+         isAdmin = true;
+         adminPassword = pass; 
+         applyEditLock();
+         alert("✅ Modo admin activado");
+     } else {
+         alert("❌ " + (data.error || "Contraseña incorrecta"));
+     }
+  } catch(e) {
+     alert("Error verificando contraseña: " + e.message);
+  }
 });
 byId("btnLogout").addEventListener("click", () => {
   if(dirty && !confirm("Tienes cambios sin guardar. ¿Salir igualmente?")) return;
