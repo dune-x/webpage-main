@@ -14,7 +14,8 @@ import {
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers, SandParticles } from "@/components";
+import { Header, RouteGuard, Providers, SandParticles } from "@/components";
+import { ClientLayout } from "@/components/ClientLayout";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
 
 export async function generateMetadata() {
@@ -158,12 +159,13 @@ localStorage.setItem('data-theme', 'dark');
           </RevealFx>
           <Flex fillWidth minHeight="16" s={{ hide: true }} />
           <Header />
-          <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
-            <Flex horizontal="center" fillWidth minHeight="0">
-              <RouteGuard>{children}</RouteGuard>
-            </Flex>
-          </Flex>
-          <Footer />
+            <ClientLayout>
+              <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
+                <Flex horizontal="center" fillWidth minHeight="0">
+                  <RouteGuard>{children}</RouteGuard>
+                </Flex>
+              </Flex>
+            </ClientLayout>
           <SpeedInsights />
           <Analytics />
         </Column>
