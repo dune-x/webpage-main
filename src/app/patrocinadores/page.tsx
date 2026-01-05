@@ -139,11 +139,11 @@ export default function PatrocinadoresPage() {
             </RevealFx>
         </Column>
       </Column>
-
+<RevealFx delay={0.2} translateY={16}>
       <Row fillWidth>
         <Line/>
       </Row>
-
+ </RevealFx>
       {/* Big */}
       <Grid fillWidth columns="3" s={{ columns: 2 }} gap="16">
         <SponsorGrid sponsors={bigSponsors} variant="big" />
