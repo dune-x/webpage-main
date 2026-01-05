@@ -211,7 +211,7 @@ export default function RaidMapClient() {
     }
 
     const total = stage.coords.length;
-    const durationMs = 1000;
+    const durationMs = 2500;
 
     setDrawnCoords(stage.coords.slice(0, 1));
 
