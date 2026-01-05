@@ -2,7 +2,7 @@
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { Button, Row, Column, Text, Switch, IconButton, Icon, Slider } from "@once-ui-system/core";
+import { Button, Row, Column, Text, Switch, IconButton, Icon, Slider, Spinner } from "@once-ui-system/core";
 import Map, { Layer, MapRef, Source } from "react-map-gl/mapbox";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -31,6 +31,11 @@ const PALETTE = [
 
 const ROUTE_COLOR = "#ff3b30";
 const GLOW_COLOR = "#ff3b30";
+
+const STYLE_SATELLITE = "mapbox://styles/dune-x/cmk15x0ti003n01r30dj7g62c";
+const STYLE_TOPO = "mapbox://styles/dune-x/cmk130ytk002v01s95gvd7lux";
+
+
 
 /* =========================
    GEO HELPERS
@@ -109,10 +114,11 @@ export default function RaidMapClient() {
   const [stageId, setStageId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isFlying, setIsFlying] = useState(false);
+  const [isPreloading, setIsPreloading] = useState(false);
   
   // Flyover controls
-  const [flyZoom, setFlyZoom] = useState(17.5); // Default zoom
-  const [flySpeed, setFlySpeed] = useState(25);  // Km/h. Default 25.
+  const [flyZoom, setFlyZoom] = useState(12); // Default zoom
+  const [flySpeed, setFlySpeed] = useState(10);  // Km/h. Default 25.
 
   // Refs for animation loop access
   const flyZoomRef = useRef(flyZoom);
@@ -123,7 +129,7 @@ export default function RaidMapClient() {
   useEffect(() => { flySpeedRef.current = flySpeed; }, [flySpeed]);
   
   // Style switcher: 'satellite' | 'outdoor'
-  const [mapStyle, setMapStyle] = useState<string>("mapbox://styles/mapbox/satellite-streets-v12");
+  const [mapStyle, setMapStyle] = useState<string>(STYLE_SATELLITE);
 
   // Selector state: 'trip', 'stage', or 'all'
   // Default to 'all'
@@ -224,6 +230,50 @@ export default function RaidMapClient() {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [stageId, selectedType, stage, isFlying]); 
+
+  // HANDLERS
+  const startFlyover = () => {
+     if (isFlying) {
+         setIsFlying(false);
+         return;
+     }
+
+     const map = mapRef.current;
+     if (!map || !stage?.coords?.length) return;
+     
+     setIsPreloading(true);
+     
+     // 1. Jump to start
+     const startCoord = stage.coords[0];
+     map.jumpTo({
+        center: startCoord,
+        zoom: flyZoom,
+        pitch: 60,
+        bearing: 0
+     });
+
+     // 2. Wait for idle (tiles loaded)
+     const onIdle = () => {
+        setIsPreloading(false);
+        setIsFlying(true);
+        map.off('idle', onIdle);
+     };
+
+     // Fallback timeout in case idle never fires (e.g. all tiles cached/loaded already or error)
+     // Actually idle fires when no more renders are scheduled. 
+     // We'll give it a max 5s wait.
+     const timeoutId = setTimeout(() => {
+         if (isFlying) return; // Already started
+         map.off('idle', onIdle);
+         setIsPreloading(false);
+         setIsFlying(true);
+     }, 4000);
+
+     map.once('idle', () => {
+         clearTimeout(timeoutId);
+         onIdle();
+     });
+  };
 
   // FLYOVER ANIMATION
   useEffect(() => {
@@ -583,8 +633,8 @@ export default function RaidMapClient() {
             <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 1, background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(4px)', padding: '6px 12px', borderRadius: 32, display: 'flex', alignItems: 'center', gap: 8 }}>
                <Text variant="label-default-s" style={{color: '#000', opacity: 0.7}}>Sat</Text>
                <Switch
-                  isChecked={!mapStyle.includes('satellite')}
-                  onToggle={() => setMapStyle(prev => prev.includes('satellite') ? "mapbox://styles/dune-x/cmk136e55004t01sg9xc0fj1u" : "mapbox://styles/mapbox/satellite-streets-v12")}
+                  isChecked={mapStyle === STYLE_TOPO}
+                  onToggle={() => setMapStyle(prev => prev === STYLE_TOPO ? STYLE_SATELLITE : STYLE_TOPO)}
                />
 
                <Text variant="label-default-s" style={{color: '#000', opacity: 0.7}}>Topo</Text>
@@ -625,14 +675,20 @@ export default function RaidMapClient() {
                            </Column>
                         </div>
                     )}
-
-                    <IconButton
-                        variant="primary"
-                        size="l"
-                        icon={isFlying ? "stop" : "play"}
-                        onClick={() => setIsFlying(!isFlying)}
-                        tooltip="Vista de pájaro"
-                    />
+                    
+                    {isPreloading ? (
+                        <div style={{ background: 'rgba(0,0,0,0.6)', padding: 12, borderRadius: '50%' }}>
+                            <Spinner size="m" />
+                        </div>
+                    ) : (
+                        <IconButton
+                            variant="primary"
+                            size="l"
+                            icon={isFlying ? "stop" : "play"}
+                            onClick={startFlyover}
+                            tooltip="Vista de pájaro"
+                        />
+                    )}
                 </div>
             )}
         </div>
