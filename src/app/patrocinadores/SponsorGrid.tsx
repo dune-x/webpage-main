@@ -10,6 +10,7 @@ import {
   Icon,
   Line,
   Media,
+  RevealFx,
   Row,
   Text,
 } from "@once-ui-system/core";
@@ -139,10 +140,12 @@ export default function SponsorGrid({
         }
       `}</style>
 
-      {sponsors.map((s) => (
-        <div className="sponsorTileWrap" key={s.name}>
-          <SponsorTile sponsor={s} variant={variant} />
-        </div>
+      {sponsors.map((s, index) => (
+        <RevealFx key={s.name} delay={index * 0.1} translateY={16}>
+          <div className="sponsorTileWrap">
+            <SponsorTile sponsor={s} variant={variant} />
+          </div>
+        </RevealFx>
       ))}
     </>
   );
