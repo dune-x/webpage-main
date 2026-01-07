@@ -132,7 +132,7 @@ export default function PatrocinadoresPage() {
             <RevealFx delay={0.2} translateY={16}>
                 <Column horizontal="center" maxWidth="m">
                     <Text variant="heading-default-s" onBackground="neutral-weak" style={{ textAlign: "center" }}>
-                        El proyecto Dune-X no sería posible sin el apoyo de las empresas y entidades que creen en nosotros.<br/>
+                        El proyecto Dune-X no sería posible sin el apoyo de las empresas y entidades que creen en nosotros...<br/>
           Gracias a sus aportaciones —económicas, materiales y logísticas— podemos preparar nuestros vehículos, llevar ayuda solidaria a las aldeas del desierto y vivir una experiencia humana y formativa única.
                     </Text>
                 </Column>
