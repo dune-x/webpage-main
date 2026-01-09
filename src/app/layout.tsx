@@ -6,17 +6,13 @@ import classNames from "classnames";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next"
 import {
-  Background,
   Column,
   Flex,
   Meta,
-  opacity,
-  RevealFx,
-  SpacingToken,
 } from "@once-ui-system/core";
-import { Header, RouteGuard, Providers, SandParticles } from "@/components";
+import { Header, RouteGuard, Providers, NightSkyBackground, SandParticles } from "@/components";
 import { ClientLayout } from "@/components/ClientLayout";
-import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
+import { baseURL, fonts, style, dataStyle, home } from "@/resources";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -114,49 +110,8 @@ localStorage.setItem('data-theme', 'dark');
           padding="0"
           horizontal="center"
         >
+          <NightSkyBackground />
           <SandParticles />
-          <RevealFx fill position="absolute">
-            <Background
-              mask={{
-                x: effects.mask.x,
-                y: effects.mask.y,
-                radius: effects.mask.radius,
-                cursor: effects.mask.cursor,
-              }}
-              gradient={{
-                display: effects.gradient.display,
-                opacity: effects.gradient.opacity as opacity,
-                x: effects.gradient.x,
-                y: effects.gradient.y,
-                width: effects.gradient.width,
-                height: effects.gradient.height,
-                tilt: effects.gradient.tilt,
-                colorStart: effects.gradient.colorStart,
-                colorEnd: effects.gradient.colorEnd,
-              }}
-              dots={{
-                display: effects.dots.display,
-                opacity: effects.dots.opacity as opacity,
-                size: effects.dots.size as SpacingToken,
-                color: effects.dots.color,
-              }}
-              grid={{
-                display: effects.grid.display,
-                opacity: effects.grid.opacity as opacity,
-                color: effects.grid.color,
-                width: effects.grid.width,
-                height: effects.grid.height,
-              }}
-              lines={{
-                display: effects.lines.display,
-                opacity: effects.lines.opacity as opacity,
-                size: effects.lines.size as SpacingToken,
-                thickness: effects.lines.thickness,
-                angle: effects.lines.angle,
-                color: effects.lines.color,
-              }}
-            />
-          </RevealFx>
           <Flex fillWidth minHeight="16" s={{ hide: true }} />
           <Header />
             <ClientLayout>

@@ -39,7 +39,7 @@ const sponsors = [
   { icon: "/images/sponsors/CIMWORKS.webp", href: "https://www.cimworks.es" },
   { icon: "/images/sponsors/EIC.svg", href: "https://eic.cat" },
   { icon: "/images/sponsors/luis capdevila.webp", href: "https://luiscapdevila.es" },
-  { icon: "/images/sponsors/garden.png", href: "https://www.gardenhotels.com" },
+  { icon: "/images/sponsors/garden_wh.png", href: "https://www.gardenhotels.com" },
   { icon: "/images/sponsors/AIRFIRE.png", href: "https://www.airfire.es" },
   { icon: "/images/sponsors/ETSEIB.png", href: "https://etseib.upc.edu" },
   { icon: "/images/sponsors/Joan i Jordi BLANCO.png", href: "https://joanijordi.com" },
