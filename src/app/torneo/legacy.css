@@ -1,0 +1,19 @@
+:root {
+  --primary: #0056b3;
+}
+
+body {
+  background-image: url("/torneo-files/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #f4f7f6; /* Fallback */
+}
+
+/* Custom Tweaks for specific legacy look */
+.legacy-card {
+  border-top: 5px solid #0056b3;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
