@@ -53,7 +53,7 @@ const home: Home = {
   image: "/images/og/home.jpg",
   label: "Home",
   title: `${person.name}`,
-  description: `Página web del equipo ${person.role}`,
+  description: `Página web del equipo de raids Dune-X`,
   headline: (
     <img
       src="/images/logo.png"
