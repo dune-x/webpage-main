@@ -329,6 +329,7 @@ function applyEditLock(){
   document.querySelectorAll('#finals input.scoreMini, #finals select.pick').forEach(el => { el.disabled = !isAdmin; });
   document.querySelectorAll('#config select[data-letter]').forEach(el => { el.disabled = !isAdmin; });
   byId("btnSaveConfig").disabled = !isAdmin;
+  byId("btnSave").style.display = isAdmin ? "inline-block" : "none";
 
   byId("adminState").textContent = isAdmin ? "Modo: ADMIN (EDITANDO)" : "Modo: SOLO LECTURA";
   byId("btnLogout").style.display = isAdmin ? "inline-block" : "none";
