@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import {
   Animation,
   Arrow,
@@ -29,6 +29,11 @@ export default function SponsorGrid({
   sponsors: Sponsor[];
   variant: "big" | "small";
 }) {
+  const [activeSponsor, setActiveSponsor] = useState<Sponsor | null>(null);
+
+  // Close modal when clicking backdrop
+  const handleClose = () => setActiveSponsor(null);
+
   return (
     <>
       <style>{`
@@ -59,6 +64,7 @@ export default function SponsorGrid({
           transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
           overflow: hidden;
           width: 100%;
+          cursor: pointer; /* Ensure pointer for clickability */
         }
 
         .sponsorTrigger:hover {
@@ -89,7 +95,7 @@ export default function SponsorGrid({
         }
 
         /* =========================
-           SLIDE CARD (OPACO)
+           SLIDE CARD (DESKTOP)
            ========================= */
         .sponsorInfoCard {
           max-width: 420px;
@@ -110,40 +116,74 @@ export default function SponsorGrid({
           content: none !important;
         }
 
-          /* =========================
-          HEADER LOGO (CORREGIDO)
-          ========================= */
+        /* Hide desktop card on mobile */
+        @media (max-width: 768px) {
+          .sponsorInfoCard {
+             display: none !important;
+          }
+        }
+
+        /* =========================
+           HEADER LOGO (CORREGIDO)
+           ========================= */
         .headerLogo {
-          /* Eliminamos el width fijo y usamos max-width */
           width: auto;            
           max-width: 140px;       
           height: 52px;           
-          
           display: flex;
           align-items: center;
-          justify-content: center; /* Centramos el logo en su espacio */
-          
+          justify-content: center;
           border-radius: 0 !important;
           overflow: visible !important;
-          
-          /* Ajustamos flex-shrink para que no desaparezca si falta espacio */
           flex-shrink: 0;
         }
 
-        /* Opcional: Si quieres que los logos cuadrados se vean un poco más grandes, 
-          puedes permitir que crezcan un poco en altura */
         .headerLogo img {
-          width: auto !important;      /* Deja que el ancho fluya */
-          height: 100% !important;     /* Llena la altura disponible */
-          max-width: 100%;             /* Pero no te pases del contenedor */
+          width: auto !important;
+          height: 100% !important;
+          max-width: 100%;
           object-fit: contain !important;
         }
       `}</style>
 
+      {/* MODAL FOR MOBILE */}
+      {activeSponsor && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 99999,
+            backgroundColor: "rgba(0,0,0,0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+          onClick={handleClose}
+        >
+          <div onClick={(e) => e.stopPropagation()} style={{ width: "100%", maxWidth: "400px" }}>
+            <SponsorCardContent sponsor={activeSponsor} variant={variant} isModal />
+          </div>
+        </div>
+      )}
+
       {sponsors.map((s, index) => (
         <RevealFx key={s.name} delay={index * 0.1} translateY={16}>
           <div className="sponsorTileWrap">
-            <SponsorTile sponsor={s} variant={variant} />
+            <SponsorTile 
+              sponsor={s} 
+              variant={variant} 
+              onOpen={(sponsor) => {
+                 // Open modal only on small screens? 
+                 // Or we can just set it active. 
+                 // Ideally check window.innerWidth or just always allow opening on click 
+                 // but typically desktop users hover.
+                 if (window.innerWidth <= 768) {
+                   setActiveSponsor(sponsor);
+                 }
+              }} 
+            />
           </div>
         </RevealFx>
       ))}
@@ -154,14 +194,13 @@ export default function SponsorGrid({
 function SponsorTile({
   sponsor,
   variant,
+  onOpen,
 }: {
   sponsor: Sponsor;
   variant: "big" | "small";
+  onOpen: (s: Sponsor) => void;
 }) {
-  const { name, src, href, description } = sponsor;
-  const isExternal = href?.startsWith("http");
-  const hasLink = Boolean(href);
-
+  const { name, src } = sponsor;
   const triggerId = `sponsor-trigger-${name.replace(/\s+/g, "-")}`;
 
   /* =========================
@@ -173,6 +212,7 @@ function SponsorTile({
       className={`sponsorTrigger ${variant}`}
       title={name}
       aria-label={name}
+      onClick={() => onOpen(sponsor)}
     >
       <Media
         src={src}
@@ -186,95 +226,116 @@ function SponsorTile({
   );
 
   /* =========================
-     SLIDE CARD
+     HOVER CARD (Desktop)
      ========================= */
   return (
     <Animation slideUp={1.15} triggerType="hover" center trigger={Trigger}>
-      <Card
-        className="sponsorInfoCard"
-        radius="l-4"
-        direction="column"
-        border="neutral-alpha-medium"
-      >
-        {/* Header */}
-        <Row fillWidth paddingX="20" paddingY="16" gap="20" vertical="center">
-          <Media
-            src={src}
-            alt={name}
-            radius="none"
-            sizes="160px"
-            className="headerLogo"
-          />
-
-          <Column gap="4">
-            <Text variant="label-default-m">{name}</Text>
-            <Text variant="body-default-xs" onBackground="neutral-weak">
-              Patrocinador {variant === "big" ? "principal" : "colaborador"}
-            </Text>
-          </Column>
-        </Row>
-
-        <Line background="neutral-alpha-medium" />
-
-        {/* Body */}
-        <Column fillWidth paddingX="20" paddingY="16" gap="12">
-          <Text variant="body-default-s" onBackground="neutral-weak">
-            {description ??
-              "Gracias por apoyar el proyecto Dune-X. Descubre más visitando su web."}
-          </Text>
-
-          {/* CTA */}
-          {hasLink ? (
-            isExternal ? (
-              <a
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Visitar ${name}`}
-                style={{ textDecoration: "none" }}
-              >
-                <Row
-                  id={`${triggerId}-arrow`}
-                  gap="8"
-                  vertical="center"
-                  textVariant="label-default-s"
-                  onBackground="neutral-strong"
-                >
-                  Visitar web
-                  <Arrow trigger={`#${triggerId}-arrow`} scale={1.1} />
-                </Row>
-              </a>
-            ) : (
-              <Link
-                href={href}
-                aria-label={`Abrir ${name}`}
-                style={{ textDecoration: "none" }}
-              >
-                <Row
-                  id={`${triggerId}-arrow`}
-                  gap="8"
-                  vertical="center"
-                  textVariant="label-default-s"
-                  onBackground="neutral-strong"
-                >
-                  Abrir página
-                  <Arrow trigger={`#${triggerId}-arrow`} scale={1.1} />
-                </Row>
-              </Link>
-            )
-          ) : (
-            <Row
-              gap="8"
-              vertical="center"
-              textVariant="label-default-s"
-              onBackground="neutral-weak"
-            >
-              <Icon name="info" size="s" />
-              Web no disponible
-            </Row>
-          )}
-        </Column>
-      </Card>
+        <SponsorCardContent sponsor={sponsor} variant={variant} />
     </Animation>
+  );
+}
+
+function SponsorCardContent({
+  sponsor,
+  variant,
+  isModal = false,
+}: {
+  sponsor: Sponsor;
+  variant: "big" | "small";
+  isModal?: boolean;
+}) {
+  const { name, src, href, description } = sponsor;
+  const isExternal = href?.startsWith("http");
+  const hasLink = Boolean(href);
+  const triggerId = `sponsor-content-${name.replace(/\s+/g, "-")}`;
+
+  return (
+    <Card
+      className={!isModal ? "sponsorInfoCard" : ""}
+      radius="l-4"
+      direction="column"
+      border="neutral-alpha-medium"
+      background="surface" // Ensure modal card has background
+      style={isModal ? { boxShadow: "0 16px 40px rgba(0,0,0,0.25)" } : undefined}
+    >
+      {/* Header */}
+      <Row fillWidth paddingX="20" paddingY="16" gap="20" vertical="center">
+        <Media
+          src={src}
+          alt={name}
+          radius="none"
+          sizes="160px"
+          className="headerLogo"
+        />
+
+        <Column gap="4">
+          <Text variant="label-default-m">{name}</Text>
+          <Text variant="body-default-xs" onBackground="neutral-weak">
+            Patrocinador {variant === "big" ? "principal" : "colaborador"}
+          </Text>
+        </Column>
+      </Row>
+
+      <Line background="neutral-alpha-medium" />
+
+      {/* Body */}
+      <Column fillWidth paddingX="20" paddingY="16" gap="12">
+        <Text variant="body-default-s" onBackground="neutral-weak">
+          {description ??
+            "Gracias por apoyar el proyecto Dune-X. Descubre más visitando su web."}
+        </Text>
+
+        {/* CTA */}
+        {hasLink ? (
+          isExternal ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Visitar ${name}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Row
+                id={`${triggerId}-arrow`}
+                gap="8"
+                vertical="center"
+                textVariant="label-default-s"
+                onBackground="neutral-strong"
+              >
+                Visitar web
+                <Arrow trigger={`#${triggerId}-arrow`} scale={1.1} />
+              </Row>
+            </a>
+          ) : (
+            <Link
+              href={href}
+              aria-label={`Abrir ${name}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Row
+                id={`${triggerId}-arrow`}
+                gap="8"
+                vertical="center"
+                textVariant="label-default-s"
+                onBackground="neutral-strong"
+              >
+                Abrir página
+                <Arrow trigger={`#${triggerId}-arrow`} scale={1.1} />
+              </Row>
+            </Link>
+          )
+        ) : (
+          <Row
+            gap="8"
+            vertical="center"
+            textVariant="label-default-s"
+            onBackground="neutral-weak"
+          >
+            <Icon name="info" size="s" />
+            Web no disponible
+          </Row>
+        )}
+      </Column>
+    </Card>
   );
 }
