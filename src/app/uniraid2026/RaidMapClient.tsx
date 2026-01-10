@@ -629,8 +629,45 @@ export default function RaidMapClient() {
             )}
             </Map>
 
+            {/* MOBILE DROPDOWN (Visible only on small screens) */}
+            <div className="mobile-dropdown-container" style={{ position: 'absolute', top: 16, left: 16, zIndex: 2, width: 'calc(100% - 140px)' }}>
+               <select 
+                  className="mobile-stage-select"
+                  value={selectedType === "all" ? "all" : stageId || ""}
+                  onChange={(e) => {
+                     const val = e.target.value;
+                     if (val === "all") {
+                        setSelectedType("all");
+                        setStageId(null);
+                     } else {
+                        const s = stages.find(st => st.id === Number(val));
+                        if(s) {
+                           setSelectedType(s.type);
+                           setStageId(s.id);
+                        }
+                     }
+                  }}
+                  style={{
+                     width: '100%',
+                     padding: '8px 12px',
+                     borderRadius: '8px',
+                     border: '1px solid var(--neutral-alpha-medium)',
+                     background: 'rgba(255,255,255,0.9)',
+                     backdropFilter: 'blur(4px)',
+                     color: '#000',
+                     fontSize: '14px',
+                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                  }}
+               >
+                  <option value="all">Vista Global</option>
+                  {stages.map(s => (
+                     <option key={s.id} value={s.id}>{s.name}</option>
+                  ))}
+               </select>
+            </div>
+
             {/* STYLE SWITCHER */}
-            <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 1, background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(4px)', padding: '6px 12px', borderRadius: 32, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div className="map-style-switcher" style={{ position: 'absolute', zIndex: 1, background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(4px)', padding: '6px 12px', borderRadius: 32, display: 'flex', alignItems: 'center', gap: 8 }}>
                <Text variant="label-default-s" style={{color: '#000', opacity: 0.7}}>Sat</Text>
                <Switch
                   isChecked={mapStyle === STYLE_TOPO}
@@ -710,7 +747,36 @@ export default function RaidMapClient() {
            color: var(--brand-on-background-weak);
         }
 
+
+        /* Desktop default: mobile dropdown hidden */
+        .mobile-dropdown-container {
+           display: none;
+        }
+        
+        /* Default Switcher Position (Desktop) */
+        .map-style-switcher {
+           top: 16px;
+           right: 16px;
+        }
+
         @media (max-width: 768px) {
+           /* On mobile, sidebar is hidden */
+           .timeline-sidebar-responsive {
+              display: none !important;
+           }
+           /* On mobile, dropdown is shown */
+           .mobile-dropdown-container {
+              display: block;
+           }
+           
+           /* Move switcher to bottom-left on mobile to avoid overlap */
+           .map-style-switcher {
+              top: auto;
+              bottom: 16px;
+              left: 16px;
+              right: auto;
+           }
+           
            .timeline-sidebar-responsive.active-selection {
               width: 120px !important;
            }

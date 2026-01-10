@@ -47,9 +47,9 @@ export default function UniRaid2026Page() {
       {/* Intro responsive */}
       <div className={styles.introGrid}>
         {/* Texto */}
-        <Column gap="s" style={{ minWidth: 0 }}>
-          <Text variant="heading-default-s">¿Qué es Uniraid?</Text>
-          <Text onBackground="neutral-weak">
+        <Column gap="s" style={{ minWidth: 0}} >
+          <Text variant="heading-default-s" >¿Qué es Uniraid?</Text>
+          <Text onBackground="neutral-weak" >
             Uniraid es un raid solidario y de aventura por Marruecos, pensado
             para estudiantes y jóvenes, donde la navegación, la estrategia y el
             trabajo en equipo son clave. No se trata solo de llegar, sino de
@@ -57,10 +57,10 @@ export default function UniRaid2026Page() {
             etapa a etapa.
           </Text>
 
-          <Text variant="heading-default-s">
+          <Text variant="heading-default-s" >
             ¿Por qué participamos como Dune-X?
           </Text>
-          <Text onBackground="neutral-weak">
+          <Text onBackground="neutral-weak" >
             Participamos para poner a prueba nuestro proyecto en un entorno real,
             compartir la aventura con la comunidad y aportar nuestro granito de
             arena en el componente solidario del raid. Para nosotros es un reto
@@ -76,11 +76,13 @@ export default function UniRaid2026Page() {
             width: "100%",
             minHeight: 220,
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <Image
-            src="/images/gallery/horizontal-2.jpg"
+            src="/images/uniraid.png"
             alt="Uniraid"
             width={260}
             height={260}
