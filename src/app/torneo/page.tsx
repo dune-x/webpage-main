@@ -3,8 +3,11 @@
 import { Flex, Card, Column, Heading, Text, Button, Icon } from "@once-ui-system/core";
 import { useState } from "react";
 
+// Set this to false to disable the construction warning overlay
+const SHOW_WARNING_OVERLAY = true;
+
 export default function TorneoPage() {
-  const [showWarning, setShowWarning] = useState(true);
+  const [showWarning, setShowWarning] = useState(SHOW_WARNING_OVERLAY);
 
   return (
     <Flex
