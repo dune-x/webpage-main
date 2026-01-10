@@ -325,7 +325,6 @@ export default function About() {
         }}
       >
         <Media
-          enlarge
           radius="l"
           alt={image.alt}
           src={image.src}

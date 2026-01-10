@@ -178,7 +178,7 @@ const about: About = {
     title: "Pilotos",
     skills: [
       {
-        title: "Seat Panda",
+        title: "A los mandos del Seat Panda",
         description: (
           <></>
         ),
@@ -201,7 +201,7 @@ const about: About = {
 ],
       },
       {
-        title: "Seat Marbella",
+        title: "A los mandos del Seat Marbella",
         description: (
           <></>
         ),
