@@ -60,7 +60,9 @@ const smallSponsors = [
     src: "/images/sponsors/ETSEIB.png",
     href: "https://etseib.upc.edu",
     description:
-      (<>La escuela que impulsa talento y conocimiento: soporte académico y comunidad.</>),
+      (<>ETSEIB (Escuela Técnica Superior de Ingeniería Industrial de Barcelona) es una de las escuelas de ingeniería más prestigiosas de España. Forma parte de la Universitat Politècnica de Catalunya (UPC) y se dedica a la formación de ingenieros e ingenieras con una sólida base técnica, científica y práctica, fomentando la innovación, la investigación y la estrecha relación con el mundo industrial.
+
+Además, la ETSEIB apoya nuestro proyecto Dune-X y es el centro donde estudiamos el Máster en Ingeniería Industrial, siendo una pieza clave en nuestro desarrollo académico y en la aplicación práctica de los conocimientos adquiridos al proyecto.</>),
   },
   {
     name: "Joan i Jordi",
