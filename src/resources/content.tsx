@@ -264,17 +264,12 @@ const gallery: Gallery = {
       orientation: "vertical",
     },
     {
-      src: "/images/gallery/horizontal-2.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-2.jpg",
+      src: "/images/gallery/IMG_1999.JPEG",
       alt: "image",
       orientation: "vertical",
     },
     {
-      src: "/images/gallery/vertical-3.jpg",
+      src: "/images/gallery/IMG_1943.JPEG",
       alt: "image",
       orientation: "vertical",
     },
