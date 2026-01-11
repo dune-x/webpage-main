@@ -50,7 +50,7 @@ const bigSponsors = [
     src: "/images/sponsors/AIRFIRE.png",
     href: "https://www.airfire.es",
     description:
-      (<>Soluciones técnicas y apoyo al equipo en componentes y recursos.</>),
+      (<>AIRfire Worldwide es una empresa dedicada al diseño y fabricación de sistemas de extinción de incendios, especializada en soluciones de extinción por gas para aplicaciones industriales y técnicas, con actividad internacional en más de 40 países alrededor del mundo.</>),
   },
 ];
 
