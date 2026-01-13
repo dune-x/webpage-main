@@ -22,7 +22,7 @@ const bigSponsors = [
     src: "/images/sponsors/CIMWORKS.webp",
     href: "https://www.cimworks.es",
     description:
-      (<>CIMWORKS aporta soluciones de ingeniería industrial y soporte técnico especializado, contribuyendo al desarrollo, optimización y fiabilidad del proyecto Dune-X.<br/>CIMWORKS aporta soluciones de ingeniería industrial y soporte técnico especializado, contribuyendo al desarrollo, optimización y fiabilidad del proyecto Dune-X.</>),
+      (<>CIMWORKS aporta soluciones de ingeniería industrial y soporte técnico especializado, contribuyendo al desarrollo, optimización y fiabilidad del proyecto Dune-X.</>),
   },
   {
     name: "EIC",
