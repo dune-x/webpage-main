@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import {
   Animation,
   Arrow,
@@ -20,6 +21,8 @@ type Sponsor = {
   src: string;
   href: string;
   description?: ReactNode;
+  instagram?: string;
+  linkedin?: string;
 };
 
 export default function SponsorGrid({
@@ -42,12 +45,24 @@ export default function SponsorGrid({
            ========================= */
         .sponsorTileWrap {
           position: relative;
-          z-index: 0;
+          z-index: 1;
+        }
+
+        .sponsorCell {
+          position: relative;
+          z-index: 1;
+          transition: z-index 0s;
+        }
+        
+        .sponsorCell:hover,
+        .sponsorCell:focus-within {
+          z-index: 100;
         }
 
         .sponsorTileWrap:hover,
         .sponsorTileWrap:focus-within {
-          z-index: 50;
+          /* No direct z-index on tile wrap needed if parent handles it, 
+             but we verify the layout logic */
         }
 
         /* =========================
@@ -144,6 +159,26 @@ export default function SponsorGrid({
           max-width: 100%;
           object-fit: contain !important;
         }
+        .headerLogo img {
+          width: auto !important;
+          height: 100% !important;
+          max-width: 100%;
+          object-fit: contain !important;
+        }
+
+        .social-icon {
+            color: white; /* As requested: blancos */
+            transition: transform 0.2s;
+        }
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        .social-icon:hover {
+            transform: scale(1.2); /* Zoom effect */
+        }
       `}</style>
 
       {/* MODAL FOR MOBILE */}
@@ -169,23 +204,21 @@ export default function SponsorGrid({
       )}
 
       {sponsors.map((s, index) => (
-        <RevealFx key={s.name} delay={index * 0.1} translateY={16}>
-          <div className="sponsorTileWrap">
-            <SponsorTile 
-              sponsor={s} 
-              variant={variant} 
-              onOpen={(sponsor) => {
-                 // Open modal only on small screens? 
-                 // Or we can just set it active. 
-                 // Ideally check window.innerWidth or just always allow opening on click 
-                 // but typically desktop users hover.
-                 if (window.innerWidth <= 768) {
-                   setActiveSponsor(sponsor);
-                 }
-              }} 
-            />
-          </div>
-        </RevealFx>
+        <div key={s.name} className="sponsorCell">
+            <RevealFx delay={index * 0.1} translateY={16}>
+            <div className="sponsorTileWrap">
+                <SponsorTile 
+                sponsor={s} 
+                variant={variant} 
+                onOpen={(sponsor) => {
+                    if (window.innerWidth <= 768) {
+                    setActiveSponsor(sponsor);
+                    }
+                }} 
+                />
+            </div>
+            </RevealFx>
+        </div>
       ))}
     </>
   );
@@ -244,7 +277,7 @@ function SponsorCardContent({
   variant: "big" | "small";
   isModal?: boolean;
 }) {
-  const { name, src, href, description } = sponsor;
+  const { name, src, href, description, instagram, linkedin } = sponsor;
   const isExternal = href?.startsWith("http");
   const hasLink = Boolean(href);
   const triggerId = `sponsor-content-${name.replace(/\s+/g, "-")}`;
@@ -286,55 +319,73 @@ function SponsorCardContent({
         </Text>
 
         {/* CTA */}
-        {hasLink ? (
-          isExternal ? (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Visitar ${name}`}
-              style={{ textDecoration: "none" }}
-            >
+        {/* CTA Area */}
+        <Row fillWidth vertical="center" horizontal="between" gap="16">
+            {/* Website Link */}
+            {hasLink ? (
+              isExternal ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visitar ${name}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Row
+                    id={`${triggerId}-arrow`}
+                    gap="8"
+                    vertical="center"
+                    textVariant="label-default-s"
+                    onBackground="neutral-strong"
+                  >
+                    Visitar web
+                    <Arrow trigger={`#${triggerId}-arrow`} scale={1.1} />
+                  </Row>
+                </a>
+              ) : (
+                <Link
+                  href={href}
+                  aria-label={`Abrir ${name}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Row
+                    id={`${triggerId}-arrow`}
+                    gap="8"
+                    vertical="center"
+                    textVariant="label-default-s"
+                    onBackground="neutral-strong"
+                  >
+                    Abrir página
+                    <Arrow trigger={`#${triggerId}-arrow`} scale={1.1} />
+                  </Row>
+                </Link>
+              )
+            ) : (
               <Row
-                id={`${triggerId}-arrow`}
                 gap="8"
                 vertical="center"
                 textVariant="label-default-s"
-                onBackground="neutral-strong"
+                onBackground="neutral-weak"
               >
-                Visitar web
-                <Arrow trigger={`#${triggerId}-arrow`} scale={1.1} />
+                <Icon name="info" size="s" />
+                Web no disponible
               </Row>
-            </a>
-          ) : (
-            <Link
-              href={href}
-              aria-label={`Abrir ${name}`}
-              style={{ textDecoration: "none" }}
-            >
-              <Row
-                id={`${triggerId}-arrow`}
-                gap="8"
-                vertical="center"
-                textVariant="label-default-s"
-                onBackground="neutral-strong"
-              >
-                Abrir página
-                <Arrow trigger={`#${triggerId}-arrow`} scale={1.1} />
-              </Row>
-            </Link>
-          )
-        ) : (
-          <Row
-            gap="8"
-            vertical="center"
-            textVariant="label-default-s"
-            onBackground="neutral-weak"
-          >
-            <Icon name="info" size="s" />
-            Web no disponible
-          </Row>
-        )}
+            )}
+
+            {/* Social Icons */}
+            <Row gap="12" vertical="center" style={{ marginLeft: "auto" }}>
+                {instagram && (
+                    <a href={instagram} target="_blank" rel="noopener noreferrer" className="social-icon">
+                        <FaInstagram size={24} style={{ color: "white" }} />
+                    </a>
+                )}
+                {linkedin && (
+                    <a href={linkedin} target="_blank" rel="noopener noreferrer" className="social-icon">
+                        <FaLinkedin size={24} style={{ color: "white" }} />
+                    </a>
+                )}
+            </Row>
+        </Row>
       </Column>
     </Card>
   );
