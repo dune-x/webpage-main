@@ -88,7 +88,8 @@ function getTextContent(node: ReactNode): string {
     return node.map(getTextContent).join("");
   }
   if (React.isValidElement(node)) {
-    return getTextContent(node.props.children as ReactNode);
+    const element = node as React.ReactElement<any>;
+    return getTextContent(element.props.children);
   }
   return "";
 }
