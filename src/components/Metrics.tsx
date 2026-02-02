@@ -13,7 +13,7 @@ function formatInt(n: number) {
   return new Intl.NumberFormat("es-ES").format(Math.round(n));
 }
 
-function useCountUp(target: number, start: boolean, duration = 1000) {
+function useCountUp(target: number, start: boolean, duration = 1500) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -24,7 +24,8 @@ function useCountUp(target: number, start: boolean, duration = 1000) {
 
     const tick = (t: number) => {
       const p = Math.min((t - t0) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
+      // Mejorada suavización: ease-out cubic más suave
+      const eased = 1 - (1 - p) ** 3.5;
       setValue(target * eased);
       if (p < 1) raf = requestAnimationFrame(tick);
     };
@@ -49,14 +50,21 @@ export default function Metrics() {
       .catch(() => setMetrics(null));
   }, []);
 
-  // in-view trigger
+  // in-view trigger mejorado
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     const io = new IntersectionObserver(
-      ([e]) => e.isIntersecting && setInView(true),
-      { threshold: 0.3 }
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { 
+        threshold: 0.15,
+        rootMargin: "0px 0px -80px 0px"
+      }
     );
 
     io.observe(el);
@@ -69,7 +77,14 @@ export default function Metrics() {
 
   return (
     <Column ref={ref} fillWidth gap="24">
-      <Column gap="8">
+      <Column 
+        gap="8"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? "translateY(0)" : "translateY(20px)",
+          transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
+      >
         <Heading variant="display-strong-s">En números</Heading>
         <Text variant="body-default-l" onBackground="neutral-weak">
           Impacto real del proyecto Dune-X
@@ -83,6 +98,8 @@ export default function Metrics() {
   value={formatInt(km)}
   prefix="+"
   suffix="km"
+  index={0}
+  inView={inView}
 />
 
 <MetricCard
@@ -90,11 +107,15 @@ export default function Metrics() {
   value={formatInt(kg)}
   prefix="+"
   suffix="kg"
+  index={1}
+  inView={inView}
 />
 
 <MetricCard
   title="Patrocinadores"
   value={formatInt(sp)}
+  index={2}
+  inView={inView}
 />
 
       </div>
@@ -129,11 +150,15 @@ function MetricCard({
   value,
   suffix,
   prefix,
+  index = 0,
+  inView = true,
 }: {
   title: string;
   value: string;
   suffix?: string;
   prefix?: string;
+  index?: number;
+  inView?: boolean;
 }) {
   return (
     <Column
@@ -145,6 +170,9 @@ function MetricCard({
         background: "rgba(112,111,111,0.08)",
         minHeight: 120,
         justifyContent: "center",
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0) scale(1)" : "translateY(30px) scale(0.95)",
+        transition: `all 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${0.15 + index * 0.12}s`,
       }}
     >
       <Text variant="label-default-s" onBackground="neutral-weak">

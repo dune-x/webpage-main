@@ -4,30 +4,43 @@
 import Countdown, { type CountdownRendererFn } from "react-countdown";
 import Image from "next/image";
 import { Text, RevealFx } from "@once-ui-system/core";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type TimeBoxProps = {
   label: string;
   value: number;
+  index: number;
+  inView: boolean;
 };
 
-function TimeBox({ label, value }: TimeBoxProps) {
+function TimeBox({ label, value, index, inView }: TimeBoxProps) {
   const [bump, setBump] = useState(false);
+  const prevValue = useRef(value);
 
   useEffect(() => {
-    setBump(true);
-    const t = setTimeout(() => setBump(false), 160);
-    return () => clearTimeout(t);
-  }, []);
+    if (prevValue.current !== value) {
+      setBump(true);
+      const t = setTimeout(() => setBump(false), 160);
+      prevValue.current = value;
+      return () => clearTimeout(t);
+    }
+  }, [value]);
 
   return (
-    <div className="timeBox">
+    <div 
+      className="timeBox"
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : "translateY(20px)",
+        transition: `all 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${index * 0.1}s`,
+      }}
+    >
       <Text
         variant="display-strong-l"
         style={{
           fontVariantNumeric: "tabular-nums",
-          transform: bump ? "translateY(-1px) scale(1.03)" : "translateY(0) scale(1)",
-          transition: "transform 160ms ease",
+          transform: bump ? "translateY(-2px) scale(1.05)" : "translateY(0) scale(1)",
+          transition: "transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1)",
           letterSpacing: -0.5,
         }}
       >
@@ -42,6 +55,25 @@ function TimeBox({ label, value }: TimeBoxProps) {
 }
 
 export default function HeroCountdown() {
+  const [inView, setInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -100px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   const NEXT_RAID_NAME = "UNIRAID 2026";
   const NEXT_RAID_LOGO = "/images/uniraid.png";
 
@@ -288,10 +320,10 @@ export default function HeroCountdown() {
           {/* DERECHA */}
           <div className="right">
             <div className="timeGrid" aria-label="Cuenta atrás">
-              <TimeBox label="Días" value={days} />
-              <TimeBox label="Horas" value={hours} />
-              <TimeBox label="Min" value={minutes} />
-              <TimeBox label="Seg" value={seconds} />
+              <TimeBox label="Días" value={days} index={0} inView={inView} />
+              <TimeBox label="Horas" value={hours} index={1} inView={inView} />
+              <TimeBox label="Min" value={minutes} index={2} inView={inView} />
+              <TimeBox label="Seg" value={seconds} index={3} inView={inView} />
             </div>
           </div>
         </div>
@@ -488,7 +520,7 @@ export default function HeroCountdown() {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div ref={containerRef} style={{ width: "100%" }}>
       <Countdown date="2026-02-04T17:00:00" renderer={renderer} />
     </div>
   );
