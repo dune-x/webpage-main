@@ -118,6 +118,7 @@ localStorage.setItem('data-theme', 'dark');
       </head>
       <Providers>
         <Column
+          suppressHydrationWarning
           as="body"
           background="page"
           fillWidth
