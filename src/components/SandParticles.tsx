@@ -10,8 +10,30 @@ interface Particle {
   vy: number;
   baseOpacity: number;
   opacity: number;
-  twinkleSpeed: number;
-  color: string;
+  twinklePhase: number;
+  colorIndex: number;
+}
+
+// Lookup tables para optimizar funciones trigonométricas
+const SIN_TABLE_SIZE = 360;
+const sinTable = new Float32Array(SIN_TABLE_SIZE);
+const cosTable = new Float32Array(SIN_TABLE_SIZE);
+for (let i = 0; i < SIN_TABLE_SIZE; i++) {
+  const angle = (i / SIN_TABLE_SIZE) * Math.PI * 2;
+  sinTable[i] = Math.sin(angle);
+  cosTable[i] = Math.cos(angle);
+}
+
+function fastSin(angle: number): number {
+  const normalized = ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+  const index = Math.floor((normalized / (Math.PI * 2)) * SIN_TABLE_SIZE) % SIN_TABLE_SIZE;
+  return sinTable[index];
+}
+
+function fastCos(angle: number): number {
+  const normalized = ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+  const index = Math.floor((normalized / (Math.PI * 2)) * SIN_TABLE_SIZE) % SIN_TABLE_SIZE;
+  return cosTable[index];
 }
 
 const SandParticles: FC = () => {
@@ -21,126 +43,152 @@ const SandParticles: FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d", { alpha: true });
+    const ctx = canvas.getContext("2d", { 
+      alpha: true,
+      desynchronized: true, // Mejora rendimiento
+    });
     if (!ctx) return;
 
-    // Detectar si es móvil para ajustar cantidad de partículas
     const isMobile = window.innerWidth < 768;
     
     let animationFrameId: number;
     let particles: Particle[] = [];
-    // Móvil: 50 partículas, Desktop: 150 partículas (antes 700)
-    const particleCount = isMobile ? 50 : 150;
-    const colors = [
-      "rgba(210, 180, 140,", // Tan
-      "rgba(244, 164, 96,",  // Sandy Brown
-      "rgba(218, 165, 32,",  // Goldenrod
-      "rgba(255, 230, 150,", // Pale Gold
+    // Aumentado significativamente con optimizaciones
+    const particleCount = isMobile ? 120 : 350;
+    
+    // Pre-crear colores como strings completos
+    const colorStrings = [
+      "rgba(210, 180, 140,",
+      "rgba(244, 164, 96,",
+      "rgba(218, 165, 32,",
+      "rgba(255, 230, 150,",
     ];
 
-
-
     const resize = () => {
-      canvas.width = window.innerWidth;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
       canvas.height = Math.max(
         document.body.scrollHeight,
         document.body.offsetHeight,
         document.documentElement.clientHeight,
         document.documentElement.scrollHeight,
         document.documentElement.offsetHeight
-      );
+      ) * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${canvas.height / dpr}px`;
+      ctx.scale(dpr, dpr);
       init();
     };
 
     const init = () => {
+      const w = canvas.width / (window.devicePixelRatio || 1);
+      const h = canvas.height / (window.devicePixelRatio || 1);
       particles = [];
       for (let i = 0; i < particleCount; i++) {
-        const baseOpacity = Math.random() * 0.3 + 0.05; // Reducida opacidad
         particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+          x: Math.random() * w,
+          y: Math.random() * h,
           size: Math.random() * 0.5 + 0.1,
-          vx: Math.random() * 2 + 1,    // Velocidad reducida
+          vx: Math.random() * 2 + 1,
           vy: Math.random() * 0.3 - 0.15,
-          baseOpacity: baseOpacity,
-          opacity: baseOpacity,
-          twinkleSpeed: Math.random() * 0.03 + 0.01,
-          color: colors[Math.floor(Math.random() * colors.length)],
+          baseOpacity: Math.random() * 0.3 + 0.05,
+          opacity: 0,
+          twinklePhase: Math.random() * Math.PI * 2,
+          colorIndex: Math.floor(Math.random() * colorStrings.length),
         });
       }
     };
 
     let time = 0;
-    let lastTime = 0;
 
-    const draw = (currentTime: number) => {
-      // Limitar a ~30 FPS en lugar de 60 FPS
-      if (currentTime - lastTime < 33) {
-        animationFrameId = requestAnimationFrame(draw);
-        return;
-      }
-      lastTime = currentTime;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      time += 0.003; // Más lento
+    const draw = () => {
+      const w = canvas.width / (window.devicePixelRatio || 1);
+      const h = canvas.height / (window.devicePixelRatio || 1);
       
-      // Swirl simplificado - precalcular
-      const swirlX = canvas.width / 2 + Math.sin(time * 0.5) * (canvas.width / 4);
-      const swirlYPos = canvas.height / 2 + Math.cos(time * 0.7) * (canvas.height / 4);
-
-      for (const p of particles) {
-        // Twinkle más ligero
-        p.opacity = p.baseOpacity + Math.sin(currentTime * 0.001 * p.twinkleSpeed) * 0.05;
-
-
-
-        // Swirl simplificado
+      ctx.clearRect(0, 0, w, h);
+      time += 0.003;
+      
+      // Pre-calcular valores globales
+      const swirlX = w * 0.5 + fastSin(time * 0.5) * w * 0.25;
+      const swirlYPos = h * 0.5 + fastCos(time * 0.7) * h * 0.25;
+      const timePhase = time * 0.001;
+      
+      // Batch rendering: preparar estilos una vez
+      ctx.lineCap = "round";
+      
+      // Loop optimizado - minimizar llamadas a funciones
+      for (let i = 0; i < particleCount; i++) {
+        const p = particles[i];
+        
+        // Twinkle optimizado
+        p.opacity = p.baseOpacity + fastSin(p.twinklePhase + timePhase * 50) * 0.05;
+        
+        // Swirl optimizado - evitar sqrt cuando sea posible
         const dx = p.x - swirlX;
         const dy = p.y - swirlYPos;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const force = Math.max(0, (400 - dist) / 400); // Reducido radio
+        const distSq = dx * dx + dy * dy;
+        const dist = Math.sqrt(distSq);
+        const force = distSq < 160000 ? Math.max(0, (400 - dist) * 0.0025) : 0; // 400*400 = 160000
         
-        const angle = Math.atan2(dy, dx);
-        const swirlForceX = Math.sin(angle + Math.PI / 2) * force * 3;
-        const swirlForceY = Math.cos(angle + Math.PI / 2) * force * 3;
-
-        const currentVx = p.vx + swirlForceX + Math.sin(time + p.y * 0.005) * 1;
-        const currentVy = p.vy + swirlForceY + Math.cos(time * 0.5 + p.x * 0.005) * 0.5;
+        if (force > 0) {
+          const angle = Math.atan2(dy, dx);
+          const swirlForceX = fastSin(angle + 1.5708) * force * 3; // 1.5708 = PI/2
+          const swirlForceY = fastCos(angle + 1.5708) * force * 3;
+          
+          const currentVx = p.vx + swirlForceX + fastSin(time + p.y * 0.005);
+          const currentVy = p.vy + swirlForceY + fastCos(time * 0.5 + p.x * 0.005) * 0.5;
+          
+          // Dibujo optimizado
+          const speedSq = currentVx * currentVx + currentVy * currentVy;
+          if (speedSq > 0.01) {
+            const motionAngle = Math.atan2(currentVy, currentVx);
+            const lineLength = Math.sqrt(speedSq) * 1.5;
+            const cosMA = Math.cos(motionAngle);
+            const sinMA = Math.sin(motionAngle);
+            
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x - cosMA * lineLength, p.y - sinMA * lineLength);
+            ctx.strokeStyle = `${colorStrings[p.colorIndex]} ${p.opacity})`;
+            ctx.lineWidth = p.size;
+            ctx.stroke();
+          }
+          
+          p.x += currentVx;
+          p.y += currentVy;
+        } else {
+          // Sin fuerza de swirl, movimiento base
+          const currentVx = p.vx + fastSin(time + p.y * 0.005);
+          const currentVy = p.vy + fastCos(time * 0.5 + p.x * 0.005) * 0.5;
+          
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x - currentVx * 1.5, p.y - currentVy * 1.5);
+          ctx.strokeStyle = `${colorStrings[p.colorIndex]} ${p.opacity})`;
+          ctx.lineWidth = p.size;
+          ctx.stroke();
+          
+          p.x += currentVx;
+          p.y += currentVy;
+        }
         
-        ctx.beginPath();
-        const motionAngle = Math.atan2(currentVy, currentVx);
-        const lineLength = Math.sqrt(currentVx * currentVx + currentVy * currentVy) * 1.5;
-        
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(
-          p.x - Math.cos(motionAngle) * lineLength,
-          p.y - Math.sin(motionAngle) * lineLength
-        );
-        
-        ctx.strokeStyle = `${p.color} ${p.opacity})`;
-        ctx.lineWidth = p.size;
-        ctx.lineCap = "round";
-        ctx.stroke();
-
-        p.x += currentVx;
-        p.y += currentVy;
-
-        // Wrap around simplificado
-        if (p.x < -100) p.x = canvas.width + 100;
-        else if (p.x > canvas.width + 100) p.x = -100;
-        if (p.y < -100) p.y = canvas.height + 100;
-        else if (p.y > canvas.height + 100) p.y = -100;
+        // Wrap around optimizado
+        if (p.x < -100) p.x = w + 100;
+        else if (p.x > w + 100) p.x = -100;
+        if (p.y < -100) p.y = h + 100;
+        else if (p.y > h + 100) p.y = -100;
       }
 
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    window.addEventListener("resize", resize);
+    const resizeHandler = () => resize();
+    window.addEventListener("resize", resizeHandler);
     resize();
-    draw(0);
+    draw();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", resizeHandler);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -156,7 +204,7 @@ const SandParticles: FC = () => {
         height: "100%",
         pointerEvents: "none",
         zIndex: 0,
-        opacity: 0.7, // Reducida opacidad global
+        opacity: 0.7,
       }}
     />
   );
