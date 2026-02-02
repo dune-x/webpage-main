@@ -16,7 +16,6 @@ interface Particle {
 
 const SandParticles: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -25,16 +24,13 @@ const SandParticles: FC = () => {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    // Detectar si es móvil para reducir aún más o desactivar
+    // Detectar si es móvil para ajustar cantidad de partículas
     const isMobile = window.innerWidth < 768;
-    if (isMobile) {
-      // En móvil, no mostrar partículas para mejor rendimiento
-      return;
-    }
-
+    
     let animationFrameId: number;
     let particles: Particle[] = [];
-    const particleCount = 150; // Reducido de 700 a 150 (78% menos)
+    // Móvil: 50 partículas, Desktop: 150 partículas (antes 700)
+    const particleCount = isMobile ? 50 : 150;
     const colors = [
       "rgba(210, 180, 140,", // Tan
       "rgba(244, 164, 96,",  // Sandy Brown
@@ -42,12 +38,7 @@ const SandParticles: FC = () => {
       "rgba(255, 230, 150,", // Pale Gold
     ];
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = {
-        x: e.clientX,
-        y: e.clientY + window.scrollY,
-      };
-    };
+
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -101,19 +92,7 @@ const SandParticles: FC = () => {
         // Twinkle más ligero
         p.opacity = p.baseOpacity + Math.sin(currentTime * 0.001 * p.twinkleSpeed) * 0.05;
 
-        // Mouse Repulsion simplificado
-        const mdx = p.x - mouseRef.current.x;
-        const mdy = p.y - mouseRef.current.y;
-        const mdist = mdx * mdx + mdy * mdy; // Usar distancia al cuadrado (no sqrt)
-        let rx = 0;
-        let ry = 0;
-        
-        if (mdist < 22500) { // 150*150
-          const rforce = (22500 - mdist) / 22500;
-          const invDist = 1 / Math.sqrt(mdist);
-          rx = mdx * invDist * rforce * 8;
-          ry = mdy * invDist * rforce * 8;
-        }
+
 
         // Swirl simplificado
         const dx = p.x - swirlX;
@@ -125,8 +104,8 @@ const SandParticles: FC = () => {
         const swirlForceX = Math.sin(angle + Math.PI / 2) * force * 3;
         const swirlForceY = Math.cos(angle + Math.PI / 2) * force * 3;
 
-        const currentVx = p.vx + swirlForceX + rx + Math.sin(time + p.y * 0.005) * 1;
-        const currentVy = p.vy + swirlForceY + ry + Math.cos(time * 0.5 + p.x * 0.005) * 0.5;
+        const currentVx = p.vx + swirlForceX + Math.sin(time + p.y * 0.005) * 1;
+        const currentVy = p.vy + swirlForceY + Math.cos(time * 0.5 + p.x * 0.005) * 0.5;
         
         ctx.beginPath();
         const motionAngle = Math.atan2(currentVy, currentVx);
@@ -157,13 +136,11 @@ const SandParticles: FC = () => {
     };
 
     window.addEventListener("resize", resize);
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     resize();
     draw(0);
 
     return () => {
       window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
