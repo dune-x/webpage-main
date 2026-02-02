@@ -145,7 +145,6 @@ export default function Home() {
                   height: "100%",
                   border: 0,
                 }}
-                
               />
             </Column>
           </RevealFx>

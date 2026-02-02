@@ -6,55 +6,76 @@ import { useEffect, useState, useRef } from 'react';
 const NightSkyBackground = () => {
   const [offsetY, setOffsetY] = useState(0);
   const imageRef = useRef<HTMLImageElement>(null);
+  const rafRef = useRef<number>();
+  const ticking = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!imageRef.current) return;
+      if (!ticking.current) {
+        ticking.current = true;
+        rafRef.current = requestAnimationFrame(() => {
+          if (!imageRef.current) {
+            ticking.current = false;
+            return;
+          }
 
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const maxScroll = documentHeight - windowHeight;
-      
-      // If content is shorter than viewport, no scrolling needed
-      if (maxScroll <= 0) {
-        setOffsetY(0);
-        return;
+          const scrollY = window.scrollY;
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.scrollHeight;
+          const maxScroll = documentHeight - windowHeight;
+          
+          // If content is shorter than viewport, no scrolling needed
+          if (maxScroll <= 0) {
+            setOffsetY(0);
+            ticking.current = false;
+            return;
+          }
+
+          const imageHeight = imageRef.current.offsetHeight;
+          const maxTranslate = imageHeight - windowHeight;
+
+          // Ensure we don't translate if image is shorter than window
+          if (maxTranslate <= 0) {
+            setOffsetY(0);
+            ticking.current = false;
+            return;
+          }
+
+          const maxParallaxRatio = 0.5;
+          
+          let effectiveMaxTranslate = maxTranslate;
+          const currentRatio = maxTranslate / maxScroll;
+
+          if (currentRatio > maxParallaxRatio) {
+             effectiveMaxTranslate = maxScroll * maxParallaxRatio;
+          }
+
+          const scrollFraction = scrollY / maxScroll;
+          const translate = -scrollFraction * effectiveMaxTranslate;
+          
+          setOffsetY(translate);
+          ticking.current = false;
+        });
       }
-
-      const imageHeight = imageRef.current.offsetHeight;
-      const maxTranslate = imageHeight - windowHeight;
-
-      // Ensure we don't translate if image is shorter than window (shouldn't happen with min-h-screen but good safety)
-      if (maxTranslate <= 0) {
-        setOffsetY(0);
-        return;
-      }
-
-      const maxParallaxRatio = 0.5; // Controls maximum speed (0.5 means background moves at half the speed of content)
-      
-      let effectiveMaxTranslate = maxTranslate;
-      const currentRatio = maxTranslate / maxScroll;
-
-      if (currentRatio > maxParallaxRatio) {
-         effectiveMaxTranslate = maxScroll * maxParallaxRatio;
-      }
-
-      const scrollFraction = scrollY / maxScroll;
-      const translate = -scrollFraction * effectiveMaxTranslate;
-      
-      setOffsetY(translate);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
+    // Passive listeners for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     
-    // Initial calculation
-    handleScroll();
+    // Initial calculation after paint
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(handleScroll);
+    } else {
+      setTimeout(handleScroll, 0);
+    }
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
   }, []);
 
@@ -68,27 +89,25 @@ const NightSkyBackground = () => {
         height: '100vh',
         zIndex: -1,
         overflow: 'hidden',
-        pointerEvents: 'none', // Ensure clicks pass through
-        backgroundColor: '#000', // Fallback
+        pointerEvents: 'none',
+        backgroundColor: '#000',
+        contain: 'layout style paint', // CSS containment for performance
       }}
     >
       <div
         style={{
-          transform: `translateY(${offsetY}px)`,
+          transform: `translate3d(0, ${offsetY}px, 0)`, // Use translate3d for GPU acceleration
           willChange: 'transform',
           width: '100%',
-          // Use a minimum height to ensure it covers screen, but allow it to be naturally taller
-          minHeight: '100vh', 
+          minHeight: '100vh',
         }}
       >
-        {/* We use specific styling to ensure the image maintains aspect ratio and covers width, 
-            but height is determined by the image's aspect ratio relative to width. 
-            If the image fits within the viewport height, parallax won't happen (handled in JS).
-            We want it to be likely taller than viewport. */}
         <img
           ref={imageRef}
           src="/images/background-night.jpg"
-          alt="Night Sky Background"
+          alt=""
+          loading="eager"
+          decoding="async"
           style={{
             width: '100%',
             height: 'auto',
