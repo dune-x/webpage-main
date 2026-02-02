@@ -1,7 +1,7 @@
 // src/components/hero/HeroCountdown.tsx
 "use client";
 
-import Countdown, { CountdownRendererFn } from "react-countdown";
+import Countdown, { type CountdownRendererFn } from "react-countdown";
 import Image from "next/image";
 import { Text, RevealFx } from "@once-ui-system/core";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ function TimeBox({ label, value }: TimeBoxProps) {
     setBump(true);
     const t = setTimeout(() => setBump(false), 160);
     return () => clearTimeout(t);
-  }, [value]);
+  }, []);
 
   return (
     <div className="timeBox">
@@ -48,8 +48,209 @@ export default function HeroCountdown() {
   const renderer: CountdownRendererFn = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       return (
-        <RevealFx translateY={8} fillWidth horizontal="center">
-          <Text variant="heading-default-l">🚀 ¡Ya estamos en marcha!</Text>
+        <RevealFx translateY={10} delay={0.1} fillWidth horizontal="center">
+          <div className="card completed">
+            {/* IZQUIERDA */}
+            <div className="left">
+              <Text onBackground="neutral-weak" className="kicker">
+                Del 4 al 23 de Febrero
+              </Text>
+
+              <Text variant="heading-default-m" className="title">
+                ¡Ya estamos de viaje!
+              </Text>
+
+              <div className="logoWrap">
+                <Image
+                  src={NEXT_RAID_LOGO}
+                  alt={NEXT_RAID_NAME}
+                  width={320}
+                  height={120}
+                  priority
+                  style={{ width: "100%", height: "auto", objectFit: "contain" }}
+                />
+              </div>
+            </div>
+
+            {/* DIVISOR */}
+            <div className="separatorWrapper">
+              <div className="separator" />
+            </div>
+
+            {/* DERECHA */}
+            <div className="right">
+              <div className="messageBox">
+                <Text variant="heading-default-l" className="emoji">🚀</Text>
+                <Text variant="heading-default-s" onBackground="neutral-weak">
+                  Explorando nuevos horizontes
+                </Text>
+                <Text variant="body-default-m" onBackground="neutral-weak" style={{ opacity: 0.7, marginTop: '12px' }}>
+                  Volveremos con historias épicas y nuevas experiencias
+                </Text>
+              </div>
+            </div>
+          </div>
+
+          <style jsx>{`
+            .card {
+              width: 100%;
+              border-radius: 28px;
+              padding: 22px;
+              border: 1px solid var(--neutral-alpha-medium);
+              background: rgba(112, 111, 111, 0.08);
+              backdrop-filter: blur(10px);
+
+              display: grid;
+              /* Layout PC: Columna Izq | Separador | Columna Der */
+              grid-template-columns: minmax(260px, 360px) auto 1fr;
+              gap: 0;
+              align-items: stretch;
+            }
+
+            /* --- IZQUIERDA --- */
+            .left {
+              display: grid;
+              gap: 10px;
+              align-content: center;
+              padding-right: 12px;
+            }
+
+            .kicker {
+              font-size: 13px;
+              letter-spacing: 0.28px;
+            }
+
+            .title {
+              opacity: 0.98;
+            }
+
+            .logoWrap {
+              width: 100%;
+              max-width: 340px;
+              /* Padding lateral para que el logo respire */
+              padding: 0 40px; 
+              box-sizing: border-box;
+            }
+
+            /* --- SEPARADOR --- */
+            .separatorWrapper {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0 4px;
+            }
+
+            .separator {
+              width: 1px;
+              height: 80%;
+              background: linear-gradient(
+                to bottom, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.2) 20%, 
+                rgba(255,255,255,0.2) 80%, 
+                rgba(255,255,255,0) 100%
+              );
+              transform-origin: center;
+              animation: scaleIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+              opacity: 0;
+            }
+
+            @keyframes scaleIn {
+              0% { transform: scaleY(0); opacity: 0; }
+              100% { transform: scaleY(1); opacity: 1; }
+            }
+
+            /* --- DERECHA --- */
+            .right {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 100%;
+              padding-left: 12px;
+            }
+
+            .messageBox {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
+              gap: 8px;
+              max-width: 400px;
+            }
+
+            .emoji {
+              font-size: 48px;
+              margin-bottom: 8px;
+            }
+
+            /* --- MÓVIL / TABLET (<900px) --- */
+            @media (max-width: 900px) {
+              .card {
+                grid-template-columns: 1fr;
+                gap: 0;
+              }
+
+              .left {
+                padding-right: 0;
+                padding-bottom: 18px;
+                
+                /* CENTRADO PERFECTO DEL CONTENIDO IZQUIERDO */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+              }
+
+              .logoWrap {
+                /* Mantener el padding pero asegurar margin auto */
+                margin: 0 auto;
+                padding: 0 20px; 
+                max-width: 280px; /* Un poco más pequeño en móvil para que encaje mejor */
+              }
+
+              .right {
+                padding-left: 0;
+                padding-top: 18px;
+                /* Asegura que el contenedor flexible centre su contenido hijo */
+                justify-content: center;
+              }
+
+              /* Separador Horizontal */
+              .separatorWrapper {
+                width: 100%;
+                height: 1px;
+                padding: 0;
+              }
+
+              .separator {
+                width: 80%;
+                height: 1px;
+                background: linear-gradient(
+                  to right, 
+                  rgba(255,255,255,0) 0%, 
+                  rgba(255,255,255,0.2) 20%, 
+                  rgba(255,255,255,0.2) 80%, 
+                  rgba(255,255,255,0) 100%
+                );
+                animation: scaleInX 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+              }
+
+              @keyframes scaleInX {
+                0% { transform: scaleX(0); opacity: 0; }
+                100% { transform: scaleX(1); opacity: 1; }
+              }
+            }
+
+            @media (max-width: 420px) {
+              .card {
+                padding: 18px;
+              }
+              
+              .emoji {
+                font-size: 40px;
+              }
+            }
+          `}</style>
         </RevealFx>
       );
     }
@@ -288,7 +489,7 @@ export default function HeroCountdown() {
 
   return (
     <div style={{ width: "100%" }}>
-      <Countdown date="2026-02-07T00:00:00" renderer={renderer} />
+      <Countdown date="2026-02-04T17:00:00" renderer={renderer} />
     </div>
   );
 }
