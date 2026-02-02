@@ -43,6 +43,22 @@ export default async function RootLayout({
       )}
     >
       <head>
+        {/* Preload critical resources */}
+        <link
+          rel="preload"
+          href="/images/background-night.jpg"
+          as="image"
+          type="image/jpeg"
+        />
+        <link
+          rel="preconnect"
+          href="https://img.youtube.com"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://www.youtube.com"
+        />
+        
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{

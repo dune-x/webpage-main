@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, useMemo, type ReactNode } from "react";
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -41,9 +41,12 @@ export default function ScrollReveal({
     };
   }, [threshold, triggerOnce]);
 
+  // Memoize placeholder to prevent re-renders
+  const placeholder = useMemo(() => <div style={{ minHeight: "1px" }} />, []);
+
   return (
     <div ref={ref} style={{ width: "100%" }}>
-      {isVisible ? children : <div style={{ minHeight: "1px" }} />}
+      {isVisible ? children : placeholder}
     </div>
   );
 }
