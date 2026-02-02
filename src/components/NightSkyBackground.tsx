@@ -6,7 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 const NightSkyBackground = () => {
   const [offsetY, setOffsetY] = useState(0);
   const imageRef = useRef<HTMLImageElement>(null);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | undefined>(undefined);
   const ticking = useRef(false);
 
   useEffect(() => {
