@@ -11,6 +11,7 @@ import {
   SocialSharingConfig,
   StyleConfig,
 } from "@/types";
+import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 import { home } from "./index";
 
 // IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
@@ -40,34 +41,35 @@ const protectedRoutes: ProtectedRoutesConfig = {
   "/work/automate-design-handovers-with-a-figma-to-code-pipeline": true,
 };
 
-// Import and set font for each variant
-import { Geist } from "next/font/google";
-import { Geist_Mono } from "next/font/google";
 import { FaBullseye } from "react-icons/fa";
 
-const heading = Geist({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  display: "swap",
-});
+function createFallbackFont(variableClass: string, fontFamily: string) {
+  return {
+    className: "",
+    style: { fontFamily },
+    variable: variableClass,
+  } as NextFontWithVariable;
+}
 
-const body = Geist({
-  variable: "--font-body",
-  subsets: ["latin"],
-  display: "swap",
-});
+const heading = createFallbackFont(
+  "font-heading-fallback",
+  '"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+);
 
-const label = Geist({
-  variable: "--font-label",
-  subsets: ["latin"],
-  display: "swap",
-});
+const body = createFallbackFont(
+  "font-body-fallback",
+  '"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+);
 
-const code = Geist_Mono({
-  variable: "--font-code",
-  subsets: ["latin"],
-  display: "swap",
-});
+const label = createFallbackFont(
+  "font-label-fallback",
+  '"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+);
+
+const code = createFallbackFont(
+  "font-code-fallback",
+  '"Cascadia Code", "Fira Code", Consolas, monospace',
+);
 
 const fonts: FontsConfig = {
   heading: heading,

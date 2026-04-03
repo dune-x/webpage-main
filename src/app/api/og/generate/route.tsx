@@ -22,6 +22,13 @@ export async function GET(request: Request) {
     throw new Error("failed to load font data");
   }
 
+  let geistFont: ArrayBuffer | null = null;
+  try {
+    geistFont = await loadGoogleFont("Geist:wght@400");
+  } catch (error) {
+    console.warn("Falling back to default OG font", error);
+  }
+
   return new ImageResponse(
     <div
       style={{
@@ -106,13 +113,15 @@ export async function GET(request: Request) {
     {
       width: 1280,
       height: 720,
-      fonts: [
-        {
-          name: "Geist",
-          data: await loadGoogleFont("Geist:wght@400"),
-          style: "normal",
-        },
-      ],
+      fonts: geistFont
+        ? [
+            {
+              name: "Geist",
+              data: geistFont,
+              style: "normal",
+            },
+          ]
+        : [],
     },
   );
 }

@@ -50,3 +50,19 @@
   --scheme-neutral-600-30: rgba(137,152,159,0.3);
   --scheme-neutral-600-50: rgba(137,152,159,0.5);
 }
+
+.font-heading-fallback {
+  --font-heading: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.font-body-fallback {
+  --font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.font-label-fallback {
+  --font-label: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.font-code-fallback {
+  --font-code: "Cascadia Code", "Fira Code", Consolas, monospace;
+}
